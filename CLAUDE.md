@@ -20,9 +20,18 @@ All colors are CSS custom properties in `index.html` (`:root`/`[data-theme="ligh
 - **Light:** parchment bg `#f3efdd`, moss-green primary `#3e6b39`, gold accent `#a98a2f`, deep forest text `#22301c`
 - **Dark:** woodland night bg `#0f180e`, leaf-green primary `#93c477`, gold `#dcc06c`; KPI numbers render gold in dark mode
 - **Ornaments:** gold hairline on card tops (`.card::before`), gold-tipped progress bars (green→gold gradient), gold inset marker on active nav, gilded double border on flashcards, faint radial gold/green glows on `body`
-- **Logo:** leaf SVG + Cinzel wordmark "Español / MYP4 · El Bosque" (gold sub-line)
+- **Logo:** leaf SVG + Cinzel wordmark "Español / El Bosque de Gitanjali" (gold sub-line)
 - Theme choice (light/dark) persists in `localStorage` via `profile.theme`
 - Rule: keep Spanish content in a clear readable font; do not use decorative type (e.g. Tengwar) for learning text
+
+## Personalization (Gitanjali)
+- `PERSONAL = { name: 'Gitanjali' }` in `src/data.js` — single place to change the default identity
+- Default and fallback name everywhere is Gitanjali; the topbar name field stays editable (empty stored names are normalized back to the default at load)
+- Tab title "Español de Gitanjali — El Bosque"; wordmark sub-line "El Bosque de Gitanjali"
+- Overview greets by time of day ("¡Buenos días/tardes/noches, Gitanjali!") with a state-aware Spanish subtitle (due cards or current streak)
+- Gold dedication card on Overview: "Hecho con cariño para Gitanjali"
+- **Logros:** 11 achievements on Progress (streak 3/7/14/30, mastered words 10/25/50/100 across both phases, first reading/recording/writing). Earned dates stored once in `state.achievements`; a gold toast congratulates by name when newly earned. Never invent achievements not backed by tracked practice
+- `{name}` placeholders in speaking echo lines and writing prompt `12-w0` interpolate the saved name at render
 
 ## Architecture
 - `index.html` — layout + CSS (theme tokens live here); `<script type="module" src="./src/app.js">`
