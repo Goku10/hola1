@@ -1,5 +1,7 @@
 # Español MYP4 — Spanish Practice Dashboard
 
+Supports both **Phase 1–2 (beginner)** and **Phase 3–4 (intermediate)** content via an in-app level toggle.
+
 An interactive practice dashboard built for an IB MYP4 Spanish Acquisition student (Phase 1-2), covering all four IB assessment criteria:
 
 - **Vocabulary** — flashcards + quizzes across 6 topics (family, food, school, routine, house, free time)

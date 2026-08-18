@@ -128,6 +128,10 @@ textarea.writer:focus{border-color:var(--color-primary)}
   body{padding-bottom:64px}
 }
 .criteria-pill{display:inline-flex;gap:var(--space-1);align-items:center;font-size:var(--text-xs);padding:2px var(--space-2);border-radius:var(--radius-full);background:var(--color-blue-highlight);color:var(--color-blue);font-weight:600}
+.level-toggle{display:flex;gap:var(--space-1);background:var(--color-surface-offset);border-radius:var(--radius-full);padding:3px}
+.level-btn{padding:var(--space-2) var(--space-4);border-radius:var(--radius-full);font-size:var(--text-xs);font-weight:600;color:var(--color-text-muted)}
+.level-btn.active{background:var(--color-primary);color:var(--color-text-inverse)}
+
 </style>
 </head>
 <body>
@@ -153,7 +157,13 @@ textarea.writer:focus{border-color:var(--color-primary)}
         <div class="pagetitle" id="pageTitle">¡Hola! Overview</div>
         <div class="subtitle" id="pageSubtitle">MYP4 · Phase 1–2 · Spanish Acquisition</div>
       </div>
-      <button class="themetoggle" data-theme-toggle aria-label="Switch to dark mode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
+      <div style="display:flex;align-items:center;gap:var(--space-3)">
+        <div class="level-toggle" id="levelToggle">
+          <button class="level-btn active" data-level="12">Phase 1–2</button>
+          <button class="level-btn" data-level="34">Phase 3–4</button>
+        </div>
+        <button class="themetoggle" data-theme-toggle aria-label="Switch to dark mode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
+      </div>
     </div>
     <section class="section active" id="sec-overview">
       <div class="grid grid-4" style="margin-bottom:var(--space-6)">
@@ -179,7 +189,7 @@ textarea.writer:focus{border-color:var(--color-primary)}
       </div>
       <div class="card">
         <h3>Why these activities?</h3>
-        <p style="color:var(--color-text-muted);font-size:var(--text-sm)">IB MYP4 Spanish acquisition is typically taught at Phase 1–2 (emerging) and is assessed on four equal criteria: comprehending spoken text (A), comprehending written text (B), communicating in response to text (C), and using language in spoken/written form (D)<span class="criteria-pill" style="margin-left:4px">A–D</span>. This dashboard gives her focused daily practice for every criterion instead of only vocabulary drilling.</p>
+        <p style="color:var(--color-text-muted);font-size:var(--text-sm)">Use the Phase toggle above to switch between Phase 1–2 (emerging beginner) and Phase 3–4 (intermediate) content. Both are assessed on four equal criteria: comprehending spoken text (A), comprehending written text (B), communicating in response to text (C), and using language in spoken/written form (D)<span class="criteria-pill" style="margin-left:4px">A–D</span>. This dashboard gives her focused daily practice for every criterion instead of only vocabulary drilling.</p>
       </div>
     </section>
     <section class="section" id="sec-vocab">
@@ -294,14 +304,26 @@ function showSection(id){document.querySelectorAll('.section').forEach(s=>s.clas
 document.querySelectorAll('.navitem, #mobileNav button').forEach(b=>b.addEventListener('click',()=>showSection(b.dataset.section)));
 const streakGrid=document.getElementById('streakGrid');
 ['M','T','W','T','F','S','S'].forEach((d,i)=>{const el=document.createElement('div');el.className='streak-day'+(i===0?' done':'');el.textContent=d;streakGrid.appendChild(el);});
-const vocabSets={
-  'Family / Familia':[['madre','mother'],['padre','father'],['hermano','brother'],['hermana','sister'],['abuelo','grandfather'],['abuela','grandmother'],['tío','uncle'],['tía','aunt'],['primo','cousin (m)'],['prima','cousin (f)']],
-  'Food / Comida':[['manzana','apple'],['pan','bread'],['agua','water'],['leche','milk'],['pollo','chicken'],['arroz','rice'],['queso','cheese'],['fruta','fruit'],['verdura','vegetable'],['desayuno','breakfast']],
-  'School / Escuela':[['profesor','teacher (m)'],['profesora','teacher (f)'],['libro','book'],['mochila','backpack'],['clase','class'],['examen','exam'],['pizarra','whiteboard'],['tarea','homework'],['bolígrafo','pen'],['horario','schedule']],
-  'Daily routine / Rutina':[['despertarse','to wake up'],['ducharse','to shower'],['desayunar','to have breakfast'],['estudiar','to study'],['almorzar','to have lunch'],['cenar','to have dinner'],['acostarse','to go to bed'],['levantarse','to get up'],['vestirse','to get dressed'],['descansar','to rest']],
-  'House / Casa':[['cocina','kitchen'],['dormitorio','bedroom'],['baño','bathroom'],['jardín','garden'],['sala','living room'],['ventana','window'],['puerta','door'],['techo','roof'],['mesa','table'],['silla','chair']],
-  'Free time / Tiempo libre':[['jugar','to play'],['nadar','to swim'],['leer','to read'],['ver','to watch'],['dibujar','to draw'],['cantar','to sing'],['bailar','to dance'],['correr','to run'],['viajar','to travel'],['pasear','to walk/stroll']]
+const vocabSetsByLevel={
+  '12':{
+    'Family / Familia':[['madre','mother'],['padre','father'],['hermano','brother'],['hermana','sister'],['abuelo','grandfather'],['abuela','grandmother'],['tío','uncle'],['tía','aunt'],['primo','cousin (m)'],['prima','cousin (f)']],
+    'Food / Comida':[['manzana','apple'],['pan','bread'],['agua','water'],['leche','milk'],['pollo','chicken'],['arroz','rice'],['queso','cheese'],['fruta','fruit'],['verdura','vegetable'],['desayuno','breakfast']],
+    'School / Escuela':[['profesor','teacher (m)'],['profesora','teacher (f)'],['libro','book'],['mochila','backpack'],['clase','class'],['examen','exam'],['pizarra','whiteboard'],['tarea','homework'],['bolígrafo','pen'],['horario','schedule']],
+    'Daily routine / Rutina':[['despertarse','to wake up'],['ducharse','to shower'],['desayunar','to have breakfast'],['estudiar','to study'],['almorzar','to have lunch'],['cenar','to have dinner'],['acostarse','to go to bed'],['levantarse','to get up'],['vestirse','to get dressed'],['descansar','to rest']],
+    'House / Casa':[['cocina','kitchen'],['dormitorio','bedroom'],['baño','bathroom'],['jardín','garden'],['sala','living room'],['ventana','window'],['puerta','door'],['techo','roof'],['mesa','table'],['silla','chair']],
+    'Free time / Tiempo libre':[['jugar','to play'],['nadar','to swim'],['leer','to read'],['ver','to watch'],['dibujar','to draw'],['cantar','to sing'],['bailar','to dance'],['correr','to run'],['viajar','to travel'],['pasear','to walk/stroll']]
+  },
+  '34':{
+    'Environment / Medio ambiente':[['contaminación','pollution'],['reciclar','to recycle'],['el cambio climático','climate change'],['la sequía','drought'],['el desperdicio','waste'],['sostenible','sustainable'],['la energía renovable','renewable energy'],['el calentamiento global','global warming'],['proteger','to protect'],['los recursos naturales','natural resources']],
+    'Social media / Redes sociales':[['la publicación','post'],['compartir','to share'],['el seguidor','follower'],['subir (una foto)','to upload (a photo)'],['el influencer','influencer'],['la privacidad','privacy'],['el ciberacoso','cyberbullying'],['la pantalla','screen'],['la desconexión digital','digital detox'],['viral','viral']],
+    'Health & wellbeing / Salud':[['el estrés','stress'],['la alimentación sana','healthy eating'],['el bienestar','wellbeing'],['hacer ejercicio','to exercise'],['la ansiedad','anxiety'],['dormir bien','to sleep well'],['equilibrado','balanced'],['la salud mental','mental health'],['relajarse','to relax'],['el hábito','habit']],
+    'Travel & culture / Viajes y cultura':[['el intercambio cultural','cultural exchange'],['la costumbre','custom'],['el patrimonio','heritage'],['el alojamiento','accommodation'],['explorar','to explore'],['la identidad','identity'],['la diversidad','diversity'],['el idioma','language'],['la tradición','tradition'],['el extranjero','abroad']],
+    'Global issues / Problemas globales':[['la desigualdad','inequality'],['la pobreza','poverty'],['los derechos humanos','human rights'],['la globalización','globalization'],['el conflicto','conflict'],['la migración','migration'],['la solidaridad','solidarity'],['el voluntariado','volunteering'],['la injusticia','injustice'],['la ONG','NGO']],
+    'Careers & future / Carreras y futuro':[['la meta','goal'],['el objetivo','objective'],['la carrera universitaria','university degree'],['el emprendimiento','entrepreneurship'],['las prácticas','internship'],['la vocación','vocation'],['tomar una decisión','to make a decision'],['el desafío','challenge'],['la oportunidad','opportunity'],['superar','to overcome']]
+  }
 };
+let currentLevel='12';
+let vocabSets=vocabSetsByLevel[currentLevel];
 let currentTopic=Object.keys(vocabSets)[0], fcIndex=0, wordsKnown=new Set();
 const vocabTopicsEl=document.getElementById('vocabTopics');
 Object.keys(vocabSets).forEach(topic=>{const b=document.createElement('button');b.className='tab'+(topic===currentTopic?' active':'');b.textContent=topic;b.onclick=()=>{currentTopic=topic;fcIndex=0;document.querySelectorAll('#vocabTopics .tab').forEach(t=>t.classList.remove('active'));b.classList.add('active');renderFlashcard();newQuizQuestion();};vocabTopicsEl.appendChild(b);});
@@ -330,20 +352,38 @@ function newQuizQuestion(){
 document.getElementById('quizNext').onclick=newQuizQuestion;
 function updateAccuracy(){if(quizTotal>0)document.getElementById('kpiAccuracy').textContent=Math.round(100*quizCorrect/quizTotal)+'%';document.getElementById('pGrammar').textContent=grammarTotal>0?Math.round(100*grammarCorrect/grammarTotal)+'%':'—';}
 renderFlashcard();newQuizQuestion();
-const grammarSets={
-  'Ser vs Estar':{explain:'Use <strong>ser</strong> for permanent traits/identity, <strong>estar</strong> for temporary states/location.',qs:[
-    ['Yo ___ estudiante.',['soy','estoy'],'soy'],['Ella ___ cansada hoy.',['es','está'],'está'],['Nosotros ___ de Noruega.',['somos','estamos'],'somos'],
-    ['El café ___ caliente.',['es','está'],'está'],['Tú ___ muy alto.',['eres','estás'],'eres'],['¿Dónde ___ el baño?',['es','está'],'está'],
-    ['Ellos ___ felices.',['son','están'],'están'],['Mi hermano ___ médico.',['es','está'],'es'],['La fiesta ___ en mi casa.',['es','está'],'es'],['Yo ___ en la escuela ahora.',['soy','estoy'],'estoy']]},
-  'Present tense -AR verbs':{explain:'Regular -ar verbs: habl<strong>ar</strong> → hablo, hablas, habla, hablamos, habláis, hablan.',qs:[
-    ['Yo ___ (hablar) español.',['hablo','habla'],'hablo'],['Tú ___ (estudiar) mucho.',['estudias','estudia'],'estudias'],['Ella ___ (bailar) muy bien.',['bailo','baila'],'baila'],
-    ['Nosotros ___ (cantar) juntos.',['cantamos','cantáis'],'cantamos'],['Ellos ___ (jugar) fútbol.',['juega','juegan'],'juegan'],['Yo ___ (mirar) la tele.',['miro','mira'],'miro'],
-    ['Tú ___ (trabajar) hoy.',['trabajo','trabajas'],'trabajas'],['Él ___ (cocinar) la cena.',['cocina','cocino'],'cocina'],['Vosotros ___ (caminar) rápido.',['caminan','camináis'],'camináis'],['Yo ___ (necesitar) ayuda.',['necesito','necesita'],'necesito']]},
-  'Possessive adjectives':{explain:'mi/mis, tu/tus, su/sus agree in number (not gender) with the noun that follows.',qs:[
-    ['___ madre es profesora. (my)',['mi','mis'],'mi'],['¿Dónde están ___ libros? (your)',['tu','tus'],'tus'],['Ellos tienen ___ mochila. (their)',['su','sus'],'su'],
-    ['___ perros son grandes. (my)',['mi','mis'],'mis'],['¿Es ___ casa? (your)',['tu','tus'],'tu'],['Ella busca ___ llaves. (her)',['su','sus'],'sus'],
-    ['___ amigos viven aquí. (our)',['nuestro','nuestros'],'nuestros'],['___ hermana estudia arte. (my)',['mi','mis'],'mi'],['Tienen ___ propio coche. (their)',['su','sus'],'su'],['¿Tienes ___ tarea? (your)',['tu','tus'],'tu']]}
+const grammarSetsByLevel={
+  '12':{
+    'Ser vs Estar':{explain:'Use <strong>ser</strong> for permanent traits/identity, <strong>estar</strong> for temporary states/location.',qs:[
+      ['Yo ___ estudiante.',['soy','estoy'],'soy'],['Ella ___ cansada hoy.',['es','está'],'está'],['Nosotros ___ de Noruega.',['somos','estamos'],'somos'],
+      ['El café ___ caliente.',['es','está'],'está'],['Tú ___ muy alto.',['eres','estás'],'eres'],['¿Dónde ___ el baño?',['es','está'],'está'],
+      ['Ellos ___ felices.',['son','están'],'están'],['Mi hermano ___ médico.',['es','está'],'es'],['La fiesta ___ en mi casa.',['es','está'],'es'],['Yo ___ en la escuela ahora.',['soy','estoy'],'estoy']]},
+    'Present tense -AR verbs':{explain:'Regular -ar verbs: habl<strong>ar</strong> → hablo, hablas, habla, hablamos, habláis, hablan.',qs:[
+      ['Yo ___ (hablar) español.',['hablo','habla'],'hablo'],['Tú ___ (estudiar) mucho.',['estudias','estudia'],'estudias'],['Ella ___ (bailar) muy bien.',['bailo','baila'],'baila'],
+      ['Nosotros ___ (cantar) juntos.',['cantamos','cantáis'],'cantamos'],['Ellos ___ (jugar) fútbol.',['juega','juegan'],'juegan'],['Yo ___ (mirar) la tele.',['miro','mira'],'miro'],
+      ['Tú ___ (trabajar) hoy.',['trabajo','trabajas'],'trabajas'],['Él ___ (cocinar) la cena.',['cocina','cocino'],'cocina'],['Vosotros ___ (caminar) rápido.',['caminan','camináis'],'camináis'],['Yo ___ (necesitar) ayuda.',['necesito','necesita'],'necesito']]},
+    'Possessive adjectives':{explain:'mi/mis, tu/tus, su/sus agree in number (not gender) with the noun that follows.',qs:[
+      ['___ madre es profesora. (my)',['mi','mis'],'mi'],['¿Dónde están ___ libros? (your)',['tu','tus'],'tus'],['Ellos tienen ___ mochila. (their)',['su','sus'],'su'],
+      ['___ perros son grandes. (my)',['mi','mis'],'mis'],['¿Es ___ casa? (your)',['tu','tus'],'tu'],['Ella busca ___ llaves. (her)',['su','sus'],'sus'],
+      ['___ amigos viven aquí. (our)',['nuestro','nuestros'],'nuestros'],['___ hermana estudia arte. (my)',['mi','mis'],'mi'],['Tienen ___ propio coche. (their)',['su','sus'],'su'],['¿Tienes ___ tarea? (your)',['tu','tus'],'tu']]}
+  },
+  '34':{
+    'Preterite vs Imperfect':{explain:'Use the <strong>preterite</strong> for completed actions, the <strong>imperfect</strong> for ongoing/habitual past actions or descriptions.',qs:[
+      ['Ayer ___ (comer) paella.',['comí','comía'],'comí'],['Cuando era niño, ___ (jugar) mucho fútbol.',['jugué','jugaba'],'jugaba'],['El año pasado ___ (viajar) a España.',['viajé','viajaba'],'viajé'],
+      ['Mientras yo ___ (estudiar), mi hermano veía la tele.',['estudié','estudiaba'],'estudiaba'],['De repente, ___ (empezar) a llover.',['empezó','empezaba'],'empezó'],['Todos los días ella ___ (caminar) al colegio.',['caminó','caminaba'],'caminaba'],
+      ['El sábado ___ (ver) una película.',['vi','veía'],'vi'],['Antes yo ___ (vivir) en Madrid.',['viví','vivía'],'vivía'],['Ellos ___ (llegar) tarde ayer.',['llegaron','llegaban'],'llegaron'],['Normalmente nosotros ___ (desayunar) a las ocho.',['desayunamos','desayunábamos'],'desayunábamos']]},
+    'Subjunctive (present)':{explain:'Use the subjunctive after expressions of wish, doubt, emotion, or "que" clauses expressing opinion/desire.',qs:[
+      ['Espero que tú ___ (venir) a la fiesta.',['vienes','vengas'],'vengas'],['Es importante que nosotros ___ (reciclar).',['reciclamos','reciclemos'],'reciclemos'],['Ojalá que ella ___ (aprobar) el examen.',['aprueba','apruebe'],'apruebe'],
+      ['No creo que él ___ (tener) razón.',['tiene','tenga'],'tenga'],['Quiero que ustedes ___ (estudiar) más.',['estudian','estudien'],'estudien'],['Dudo que ellos ___ (llegar) a tiempo.',['llegan','lleguen'],'lleguen'],
+      ['Es posible que ___ (llover) mañana.',['llueve','llueva'],'llueva'],['Me alegra que tú ___ (estar) aquí.',['estás','estés'],'estés'],['Necesito que alguien me ___ (ayudar).',['ayuda','ayude'],'ayude'],['Es raro que ella no ___ (contestar).',['contesta','conteste'],'conteste']]},
+    'Comparatives & superlatives':{explain:'más...que / menos...que for comparisons; el/la más...de for superlatives. Irregular: mejor, peor, mayor, menor.',qs:[
+      ['Este libro es ___ interesante que el otro. (more)',['más','menos'],'más'],['Ella es la ___ inteligente de la clase. (most)',['más','menor'],'más'],['Mi hermano es ___ que yo. (older)',['mayor','menor'],'mayor'],
+      ['Este examen es ___ difícil que el anterior. (less)',['menos','más'],'menos'],['Es el ___ restaurante de la ciudad. (best)',['mejor','peor'],'mejor'],['Tu nota es ___ que la mía. (worse)',['peor','mejor'],'peor'],
+      ['Tiene tanto dinero ___ tú. (as...as)',['como','que'],'como'],['Este coche es tan rápido ___ aquel.',['como','que'],'como'],['Ella es la ___ joven de la familia. (youngest)',['menor','mayor'],'menor'],['Mi ciudad es ___ grande que Madrid. (less)',['menos','más'],'menos']]}
+  }
 };
+let currentGrammarLevel='12';
+let grammarSets=grammarSetsByLevel[currentGrammarLevel];
 let currentGrammar=Object.keys(grammarSets)[0], gIndex=0, grammarCorrect=0, grammarTotal=0;
 const grammarTopicsEl=document.getElementById('grammarTopics');
 Object.keys(grammarSets).forEach(topic=>{const b=document.createElement('button');b.className='tab'+(topic===currentGrammar?' active':'');b.textContent=topic;b.onclick=()=>{currentGrammar=topic;gIndex=0;grammarCorrect=0;grammarTotal=0;document.querySelectorAll('#grammarTopics .tab').forEach(t=>t.classList.remove('active'));b.classList.add('active');document.getElementById('gTitle').textContent=topic;document.getElementById('gExplain').innerHTML=grammarSets[topic].explain;renderGrammarQ();};grammarTopicsEl.appendChild(b);});
@@ -362,13 +402,23 @@ function renderGrammarQ(){
   document.getElementById('gScore').textContent=`Question ${gIndex+1} of ${set.qs.length} · ${grammarCorrect} correct`;
 }
 renderGrammarQ();
-const listeningItems=[
-  {text:'Mi familia tiene cuatro personas: mi madre, mi padre, mi hermana y yo.',q:'How many people are in the family?',opts:['Three','Four','Five'],correct:'Four'},
-  {text:'Todos los días me despierto a las siete y desayuno pan con queso.',q:'What does the speaker eat for breakfast?',opts:['Fruit','Bread with cheese','Rice'],correct:'Bread with cheese'},
-  {text:'Los fines de semana me gusta nadar y jugar al fútbol con mis amigos.',q:'What activities does the speaker enjoy on weekends?',opts:['Reading and drawing','Swimming and football','Cooking and dancing'],correct:'Swimming and football'},
-  {text:'Mi casa tiene un jardín grande con muchas flores y un árbol viejo.',q:'What is in the garden?',opts:['A pool','Flowers and an old tree','A garage'],correct:'Flowers and an old tree'},
-  {text:'En la escuela mi clase favorita es la de arte porque me gusta dibujar.',q:"Why does the speaker like art class?",opts:['They like drawing','It is easy','The teacher is nice'],correct:'They like drawing'}
-];
+const listeningItemsByLevel={
+  '12':[
+    {text:'Mi familia tiene cuatro personas: mi madre, mi padre, mi hermana y yo.',q:'How many people are in the family?',opts:['Three','Four','Five'],correct:'Four'},
+    {text:'Todos los días me despierto a las siete y desayuno pan con queso.',q:'What does the speaker eat for breakfast?',opts:['Fruit','Bread with cheese','Rice'],correct:'Bread with cheese'},
+    {text:'Los fines de semana me gusta nadar y jugar al fútbol con mis amigos.',q:'What activities does the speaker enjoy on weekends?',opts:['Reading and drawing','Swimming and football','Cooking and dancing'],correct:'Swimming and football'},
+    {text:'Mi casa tiene un jardín grande con muchas flores y un árbol viejo.',q:'What is in the garden?',opts:['A pool','Flowers and an old tree','A garage'],correct:'Flowers and an old tree'},
+    {text:'En la escuela mi clase favorita es la de arte porque me gusta dibujar.',q:"Why does the speaker like art class?",opts:['They like drawing','It is easy','The teacher is nice'],correct:'They like drawing'}
+  ],
+  '34':[
+    {text:'El cambio climático es uno de los problemas más graves que enfrenta el mundo hoy, y muchos jóvenes piden acciones urgentes a los gobiernos.',q:'What are young people asking governments to do?',opts:['Build more schools','Take urgent action on climate change','Lower taxes'],correct:'Take urgent action on climate change'},
+    {text:'Aunque las redes sociales nos conectan con amigos, también pueden causar ansiedad si pasamos demasiado tiempo comparándonos con otros.',q:'What can cause anxiety according to the speaker?',opts:['Not having a phone','Spending too much time comparing yourself to others online','Having too many friends'],correct:'Spending too much time comparing yourself to others online'},
+    {text:'Durante mi año de intercambio en Argentina, aprendí muchísimo sobre otra cultura y mejoré mucho mi español.',q:'What did the speaker do during their exchange year?',opts:['Learned about another culture and improved their Spanish','Studied only English','Stayed home the whole year'],correct:'Learned about another culture and improved their Spanish'},
+    {text:'Muchas organizaciones no gubernamentales trabajan para reducir la pobreza y mejorar el acceso a la educación en países en desarrollo.',q:'What do these NGOs work to reduce and improve?',opts:['Reduce pollution and improve traffic','Reduce poverty and improve access to education','Reduce prices and improve tourism'],correct:'Reduce poverty and improve access to education'},
+    {text:'Antes de elegir una carrera universitaria, es importante reflexionar sobre tus intereses y tus objetivos a largo plazo.',q:'What should you reflect on before choosing a university degree?',opts:['Your friends\' choices','Your interests and long-term goals','The cheapest option'],correct:'Your interests and long-term goals'}
+  ]
+};
+let listeningItems=listeningItemsByLevel['12'];
 let listenIdx=0;
 function renderListening(){
   const item=listeningItems[listenIdx];
@@ -382,7 +432,11 @@ function renderListening(){
 }
 document.getElementById('lPlay').onclick=()=>speak(listeningItems[listenIdx].text);
 renderListening();
-const speakingPhrases=['Me llamo Sofía y tengo catorce años.','Mi familia vive en Noruega.','Los fines de semana juego al críquet con mi padre.','Mi comida favorita es la pizza con queso.','Me gusta leer libros y ver películas.'];
+const speakingPhrasesByLevel={
+  '12':['Me llamo Sofía y tengo catorce años.','Mi familia vive en Noruega.','Los fines de semana juego al críquet con mi padre.','Mi comida favorita es la pizza con queso.','Me gusta leer libros y ver películas.'],
+  '34':['Creo que es importante proteger el medio ambiente para las futuras generaciones.','En mi opinión, las redes sociales tienen ventajas y desventajas.','Durante mi intercambio, aprendí mucho sobre otra cultura.','Es fundamental que los jóvenes se involucren en causas sociales.','Todavía no he decidido qué carrera quiero estudiar en la universidad.']
+};
+let speakingPhrases=speakingPhrasesByLevel['12'];
 let spIdx=0, speakCount=0;
 document.getElementById('spTarget').textContent=speakingPhrases[spIdx];
 document.getElementById('spNext').onclick=()=>{spIdx=(spIdx+1)%speakingPhrases.length;document.getElementById('spTarget').textContent=speakingPhrases[spIdx];document.getElementById('spResult').style.display='none';document.getElementById('spStatus').textContent='Tap the mic and speak clearly';};
@@ -413,13 +467,23 @@ if(SpeechRecognition){
 }else{
   recordBtn.onclick=()=>{document.getElementById('spStatus').textContent='Speech recognition needs Chrome or Edge browser';};
 }
-const writingPrompts=[
-  'Escribe 5 frases sobre tu familia. Usa el verbo "tener" y adjetivos posesivos (mi, tu, su).',
-  'Describe tu rutina diaria. Usa al menos 5 verbos en presente (me despierto, desayuno, etc.)',
-  'Escribe un párrafo sobre tu comida favorita y por qué te gusta.',
-  'Describe tu casa: ¿cuántas habitaciones tiene? ¿Qué hay en tu dormitorio?',
-  'Escribe sobre tus actividades de tiempo libre. ¿Qué te gusta hacer los fines de semana?'
-];
+const writingPromptsByLevel={
+  '12':[
+    'Escribe 5 frases sobre tu familia. Usa el verbo "tener" y adjetivos posesivos (mi, tu, su).',
+    'Describe tu rutina diaria. Usa al menos 5 verbos en presente (me despierto, desayuno, etc.)',
+    'Escribe un párrafo sobre tu comida favorita y por qué te gusta.',
+    'Describe tu casa: ¿cuántas habitaciones tiene? ¿Qué hay en tu dormitorio?',
+    'Escribe sobre tus actividades de tiempo libre. ¿Qué te gusta hacer los fines de semana?'
+  ],
+  '34':[
+    'Escribe un ensayo de opinión sobre el impacto de las redes sociales en los jóvenes. Usa el subjuntivo al menos dos veces.',
+    'Describe un viaje que hiciste el año pasado. Usa el pretérito y el imperfecto para narrar la experiencia.',
+    'Escribe una carta a un periódico sobre un problema medioambiental en tu comunidad y propone soluciones.',
+    'Compara dos posibles carreras universitarias que te interesan, usando comparativos y superlativos.',
+    'Escribe sobre un problema global que te preocupa (pobreza, migración, desigualdad) y explica por qué es importante actuar.'
+  ]
+};
+let writingPrompts=writingPromptsByLevel['12'];
 let wIdx=0;
 document.getElementById('wPromptText').textContent=writingPrompts[wIdx];
 document.getElementById('wNewPrompt').onclick=()=>{wIdx=(wIdx+1)%writingPrompts.length;document.getElementById('wPromptText').textContent=writingPrompts[wIdx];};
@@ -440,6 +504,51 @@ function renderCritBars(){
 }
 document.querySelectorAll('.navitem[data-section="progress"], #mobileNav button[data-section="progress"]').forEach(b=>b.addEventListener('click',renderCritBars));
 renderCritBars();
+
+// ---- LEVEL SWITCHING ----
+const levelLabels={'12':'Phase 1–2','34':'Phase 3–4'};
+function switchLevel(level){
+  currentLevel=level;
+  document.getElementById('pageSubtitle').textContent='MYP4 · '+levelLabels[level]+' · Spanish Acquisition';
+  document.querySelectorAll('#levelToggle .level-btn').forEach(b=>b.classList.toggle('active',b.dataset.level===level));
+
+  // Vocab
+  vocabSets=vocabSetsByLevel[level];
+  currentTopic=Object.keys(vocabSets)[0];fcIndex=0;wordsKnown=new Set();
+  document.getElementById('kpiWords').textContent='0';
+  document.getElementById('vocabTopics').innerHTML='';
+  Object.keys(vocabSets).forEach(topic=>{const b=document.createElement('button');b.className='tab'+(topic===currentTopic?' active':'');b.textContent=topic;b.onclick=()=>{currentTopic=topic;fcIndex=0;document.querySelectorAll('#vocabTopics .tab').forEach(t=>t.classList.remove('active'));b.classList.add('active');renderFlashcard();newQuizQuestion();};document.getElementById('vocabTopics').appendChild(b);});
+  renderFlashcard();quizCorrect=0;quizTotal=0;newQuizQuestion();
+
+  // Grammar
+  grammarSets=grammarSetsByLevel[level];
+  currentGrammar=Object.keys(grammarSets)[0];gIndex=0;grammarCorrect=0;grammarTotal=0;
+  document.getElementById('grammarTopics').innerHTML='';
+  Object.keys(grammarSets).forEach(topic=>{const b=document.createElement('button');b.className='tab'+(topic===currentGrammar?' active':'');b.textContent=topic;b.onclick=()=>{currentGrammar=topic;gIndex=0;grammarCorrect=0;grammarTotal=0;document.querySelectorAll('#grammarTopics .tab').forEach(t=>t.classList.remove('active'));b.classList.add('active');document.getElementById('gTitle').textContent=topic;document.getElementById('gExplain').innerHTML=grammarSets[topic].explain;renderGrammarQ();};document.getElementById('grammarTopics').appendChild(b);});
+  document.getElementById('gTitle').textContent=currentGrammar;
+  document.getElementById('gExplain').innerHTML=grammarSets[currentGrammar].explain;
+  renderGrammarQ();
+  updateAccuracy();
+
+  // Listening
+  listeningItems=listeningItemsByLevel[level];listenIdx=0;renderListening();
+
+  // Speaking
+  speakingPhrases=speakingPhrasesByLevel[level];spIdx=0;speakCount=0;
+  document.getElementById('spTarget').textContent=speakingPhrases[spIdx];
+  document.getElementById('spResult').style.display='none';
+  document.getElementById('kpiSpeak').textContent='0';document.getElementById('pSpeak').textContent='0';
+
+  // Writing
+  writingPrompts=writingPromptsByLevel[level];wIdx=0;
+  document.getElementById('wPromptText').textContent=writingPrompts[wIdx];
+  document.getElementById('wText').value='';document.getElementById('wCount').textContent='0 words';
+
+  document.getElementById('pVocab').textContent='0 / 60';
+  document.getElementById('pGrammar').textContent='—';
+  renderCritBars();
+}
+document.querySelectorAll('#levelToggle .level-btn').forEach(b=>b.addEventListener('click',()=>switchLevel(b.dataset.level)));
 </script>
 </body>
 </html>
