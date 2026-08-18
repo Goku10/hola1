@@ -6,23 +6,23 @@
 <title>Español MYP4 — Practice Dashboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..600&family=Work+Sans:wght@300..700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..700&family=Cormorant+Garamond:ital,wght@0,400..700;1,400..600&family=Work+Sans:wght@300..700&display=swap" rel="stylesheet">
 <style>
 :root, [data-theme="light"]{
-  --color-bg:#f8f5f0; --color-surface:#faf7f2; --color-surface-2:#fdfbf8; --color-surface-offset:#f1ece3;
-  --color-surface-offset-2:#e9e2d5; --color-surface-dynamic:#e2d9c8; --color-divider:#ddd3c1; --color-border:#d0c3ab;
-  --color-text:#2c231a; --color-text-muted:#75695a; --color-text-faint:#b6a993; --color-text-inverse:#fdfbf8;
-  --color-primary:#c1502e; --color-primary-hover:#a03e21; --color-primary-active:#7d3018; --color-primary-highlight:#ecd3c6;
-  --color-success:#4c7a3d; --color-success-hover:#3a5f2e; --color-success-highlight:#d7e3cf;
-  --color-warning:#b8862c; --color-warning-hover:#96691f; --color-warning-highlight:#eadfc4;
-  --color-error:#a5333f; --color-error-hover:#832530; --color-error-highlight:#e6d0d2;
-  --color-blue:#3d6f8e; --color-blue-highlight:#d2dfe6;
-  --color-gold:#c99a2e; --color-gold-highlight:#ecdfc0;
+  --color-bg:#f3efdd; --color-surface:#faf7e9; --color-surface-2:#fdfbf1; --color-surface-offset:#eae4cb;
+  --color-surface-offset-2:#dfd8b8; --color-surface-dynamic:#d5cda6; --color-divider:#d8d1af; --color-border:#b9b184;
+  --color-text:#22301c; --color-text-muted:#5e6b4e; --color-text-faint:#828a63; --color-text-inverse:#f9f7e4;
+  --color-primary:#3e6b39; --color-primary-hover:#2f5430; --color-primary-active:#224023; --color-primary-highlight:#d8e4c6;
+  --color-success:#557f3a; --color-success-hover:#42652c; --color-success-highlight:#d9e6c4;
+  --color-warning:#a8842c; --color-warning-hover:#8a6a1f; --color-warning-highlight:#ecdfb8;
+  --color-error:#96432f; --color-error-hover:#783322; --color-error-highlight:#e9d2c7;
+  --color-blue:#3a6f78; --color-blue-highlight:#d0e1e0;
+  --color-gold:#a98a2f; --color-gold-highlight:#ecdfb0;
   --radius-sm:.375rem; --radius-md:.5rem; --radius-lg:.75rem; --radius-xl:1rem; --radius-full:9999px;
   --transition-interactive:180ms cubic-bezier(.16,1,.3,1);
   --shadow-sm:0 1px 2px oklch(0.25 0.03 40/.08); --shadow-md:0 4px 12px oklch(0.25 0.03 40/.10); --shadow-lg:0 12px 32px oklch(0.25 0.03 40/.14);
   --content-narrow:640px; --content-default:960px; --content-wide:1200px; --content-full:100%;
-  --font-display:'Fraunces',Georgia,serif; --font-body:'Work Sans',sans-serif;
+  --font-display:'Cormorant Garamond',Georgia,serif; --font-logo:'Cinzel',Georgia,serif; --font-body:'Work Sans',sans-serif;
   --text-xs:clamp(.75rem,.7rem + .25vw,.875rem); --text-sm:clamp(.875rem,.8rem + .35vw,1rem);
   --text-base:clamp(1rem,.95rem + .25vw,1.125rem); --text-lg:clamp(1.125rem,1rem + .75vw,1.5rem);
   --text-xl:clamp(1.5rem,1.2rem + 1.25vw,2.25rem);
@@ -30,19 +30,24 @@
   --space-8:2rem;--space-10:2.5rem;--space-12:3rem;--space-16:4rem;--space-20:5rem;--space-24:6rem;
 }
 [data-theme="dark"]{
-  --color-bg:#1b1712; --color-surface:#211c16; --color-surface-2:#262019; --color-surface-offset:#241f18;
-  --color-surface-offset-2:#2b241b; --color-surface-dynamic:#352c20; --color-divider:#332b21; --color-border:#453a2b;
-  --color-text:#ece5d8; --color-text-muted:#a89b85; --color-text-faint:#7a6e5b; --color-text-inverse:#2c231a;
-  --color-primary:#e08a5f; --color-primary-hover:#e8a37f; --color-primary-active:#f0bb9f; --color-primary-highlight:#4a3324;
-  --color-success:#8fbf74; --color-success-highlight:#33422b; --color-warning:#dcb455; --color-warning-highlight:#4a3c22;
-  --color-error:#df8892; --color-error-highlight:#4a2c30; --color-blue:#82b1cf; --color-blue-highlight:#2a3a44;
-  --color-gold:#e0bd5c; --color-gold-highlight:#463a20;
-  --shadow-sm:0 1px 2px oklch(0 0 0/.3); --shadow-md:0 4px 12px oklch(0 0 0/.4); --shadow-lg:0 12px 32px oklch(0 0 0/.5);
+  --color-bg:#0f180e; --color-surface:#152013; --color-surface-2:#1a2717; --color-surface-offset:#1c2a19;
+  --color-surface-offset-2:#243320; --color-surface-dynamic:#2d4126; --color-divider:#263520; --color-border:#3c5230;
+  --color-text:#e5e9d1; --color-text-muted:#a2b18b; --color-text-faint:#84966e; --color-text-inverse:#101c0d;
+  --color-primary:#93c477; --color-primary-hover:#a9d38e; --color-primary-active:#c2e2a9; --color-primary-highlight:#2c4423;
+  --color-success:#96cc7b; --color-success-highlight:#2d4423; --color-warning:#dcbd5f; --color-warning-highlight:#463c1d;
+  --color-error:#dd9077; --color-error-highlight:#472a1f; --color-blue:#8bbcc2; --color-blue-highlight:#233b3d;
+  --color-gold:#dcc06c; --color-gold-highlight:#453b1c;
+  --shadow-sm:0 1px 2px oklch(0 0 0/.35); --shadow-md:0 4px 12px oklch(0 0 0/.45); --shadow-lg:0 12px 32px oklch(0 0 0/.55);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:none;text-size-adjust:none;-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
-body{min-height:100dvh;line-height:1.6;font-family:var(--font-body);font-size:var(--text-base);color:var(--color-text);background:var(--color-bg)}
-h1,h2,h3,h4{text-wrap:balance;line-height:1.15;font-family:var(--font-display)}
+body{min-height:100dvh;line-height:1.6;font-family:var(--font-body);font-size:var(--text-base);color:var(--color-text);
+  background:
+    radial-gradient(1100px 620px at 85% -12%, oklch(from var(--color-gold) l c h/.14), transparent 62%),
+    radial-gradient(900px 700px at -10% 110%, oklch(from var(--color-primary) l c h/.10), transparent 55%),
+    var(--color-bg);
+  background-attachment:fixed}
+h1,h2,h3,h4{text-wrap:balance;line-height:1.15;font-family:var(--font-display);letter-spacing:.01em}
 p,li{text-wrap:pretty}
 button,input,select,textarea{font:inherit;color:inherit}
 button{cursor:pointer;background:none;border:none}
@@ -51,21 +56,24 @@ button{cursor:pointer;background:none;border:none}
 a,button,[role=button],input,select{transition:color var(--transition-interactive),background var(--transition-interactive),border-color var(--transition-interactive),box-shadow var(--transition-interactive)}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
 .app{display:flex;min-height:100dvh}
-.sidebar{width:240px;flex-shrink:0;background:var(--color-surface);border-right:1px solid var(--color-divider);padding:var(--space-6) var(--space-4);position:sticky;top:0;height:100dvh;overflow-y:auto}
+.sidebar{width:240px;flex-shrink:0;background:linear-gradient(180deg,var(--color-surface),oklch(from var(--color-surface) calc(l - .015) c h));border-right:1px solid oklch(from var(--color-gold) l c h/.35);padding:var(--space-6) var(--space-4);position:sticky;top:0;height:100dvh;overflow-y:auto}
 .main{flex:1;min-width:0;padding:var(--space-6) var(--space-8);max-width:100%}
-.logo{display:flex;align-items:center;gap:var(--space-2);margin-bottom:var(--space-8)}
-.logo svg{width:32px;height:32px;color:var(--color-primary)}
-.logo span{font-family:var(--font-display);font-weight:600;font-size:var(--text-lg)}
+.logo{display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-8);padding-bottom:var(--space-4);border-bottom:1px solid oklch(from var(--color-gold) l c h/.45)}
+.logo svg{width:34px;height:34px;color:var(--color-primary);flex-shrink:0}
+.logo span{font-family:var(--font-logo);font-weight:600;font-size:1.05rem;letter-spacing:.08em;color:var(--color-text)}
+.logo span em{font-style:normal;color:var(--color-gold);display:block;font-size:.6rem;letter-spacing:.32em;font-weight:500;margin-top:1px}
 .navlist{display:flex;flex-direction:column;gap:var(--space-1)}
 .navitem{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-4);border-radius:var(--radius-md);color:var(--color-text-muted);font-size:var(--text-sm);text-align:left;width:100%}
 .navitem:hover{background:var(--color-surface-offset);color:var(--color-text)}
-.navitem.active{background:var(--color-primary-highlight);color:var(--color-primary-hover);font-weight:600}
+.navitem.active{background:var(--color-primary-highlight);color:var(--color-primary-hover);font-weight:600;box-shadow:inset 3px 0 0 var(--color-gold)}
+[data-theme="dark"] .navitem.active{color:var(--color-primary)}
 .navitem svg{width:18px;height:18px;flex-shrink:0}
 .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-8);gap:var(--space-4);flex-wrap:wrap}
-.pagetitle{font-size:var(--text-xl);font-weight:600}
+.pagetitle{font-family:var(--font-display);font-size:clamp(1.7rem,1.3rem + 1.5vw,2.5rem);font-weight:600;line-height:1.1}
+.pagetitle::after{content:'';display:block;width:64px;height:2px;margin-top:6px;border-radius:var(--radius-full);background:linear-gradient(90deg,var(--color-gold),transparent)}
 .subtitle{color:var(--color-text-muted);font-size:var(--text-sm);margin-top:var(--space-1)}
 .themetoggle{width:40px;height:40px;border-radius:var(--radius-full);display:flex;align-items:center;justify-content:center;background:var(--color-surface-offset);border:1px solid var(--color-border)}
-.themetoggle:hover{background:var(--color-surface-offset-2)}
+.themetoggle:hover{background:var(--color-surface-offset-2);border-color:var(--color-gold)}
 .themetoggle svg{width:18px;height:18px}
 .grid{display:grid;gap:var(--space-4)}
 .grid-4{grid-template-columns:repeat(4,1fr)}
@@ -73,11 +81,13 @@ a,button,[role=button],input,select{transition:color var(--transition-interactiv
 .grid-3{grid-template-columns:repeat(3,1fr)}
 @media (max-width:1000px){.grid-4{grid-template-columns:repeat(2,1fr)}.grid-3{grid-template-columns:1fr}}
 @media (max-width:640px){.grid-4,.grid-2{grid-template-columns:1fr}}
-.card{background:var(--color-surface);border:1px solid var(--color-divider);border-radius:var(--radius-lg);padding:var(--space-6);box-shadow:var(--shadow-sm)}
-.card h3{font-size:var(--text-base);font-weight:600;margin-bottom:var(--space-1)}
+.card{position:relative;background:var(--color-surface);border:1px solid var(--color-divider);border-radius:var(--radius-lg);padding:var(--space-6);box-shadow:var(--shadow-sm);overflow:hidden}
+.card::before{content:'';position:absolute;inset:0 0 auto 0;height:2px;background:linear-gradient(90deg,transparent,oklch(from var(--color-gold) l c h/.55),transparent);pointer-events:none}
+.card h3{font-size:1.25rem;font-weight:600;margin-bottom:var(--space-1)}
 .kpi{display:flex;flex-direction:column;gap:var(--space-2)}
 .kpi-label{font-size:var(--text-xs);color:var(--color-text-muted);text-transform:uppercase;letter-spacing:.04em}
-.kpi-value{font-family:var(--font-display);font-size:var(--text-xl);font-weight:600;font-variant-numeric:tabular-nums}
+.kpi-value{font-family:var(--font-display);font-size:clamp(1.7rem,1.3rem + 1.4vw,2.4rem);font-weight:700;font-variant-numeric:tabular-nums;color:var(--color-primary)}
+[data-theme="dark"] .kpi-value{color:var(--color-gold)}
 .kpi-sub{font-size:var(--text-xs);color:var(--color-text-faint)}
 .badge{display:inline-flex;align-items:center;gap:var(--space-1);padding:var(--space-1) var(--space-3);border-radius:var(--radius-full);font-size:var(--text-xs);font-weight:600}
 .badge-primary{background:var(--color-primary-highlight);color:var(--color-primary-hover)}
@@ -90,11 +100,11 @@ a,button,[role=button],input,select{transition:color var(--transition-interactiv
 .btn-ghost:hover{background:var(--color-surface-offset-2)}
 .btn svg{width:16px;height:16px}
 .progressbar{height:8px;border-radius:var(--radius-full);background:var(--color-surface-offset);overflow:hidden}
-.progressbar-fill{height:100%;background:var(--color-primary);border-radius:var(--radius-full);transition:width 400ms cubic-bezier(.16,1,.3,1)}
+.progressbar-fill{height:100%;background:linear-gradient(90deg,var(--color-primary),var(--color-gold));border-radius:var(--radius-full);transition:width 400ms cubic-bezier(.16,1,.3,1)}
 .section{display:none}
 .section.active{display:block}
-.flashcard{background:var(--color-surface);border:1px solid var(--color-divider);border-radius:var(--radius-xl);padding:var(--space-12) var(--space-8);text-align:center;box-shadow:var(--shadow-md);min-height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--space-3);cursor:pointer}
-.flashcard .word{font-family:var(--font-display);font-size:var(--text-xl);font-weight:600}
+.flashcard{position:relative;background:var(--color-surface);border:1px solid oklch(from var(--color-gold) l c h/.5);border-radius:var(--radius-xl);padding:var(--space-12) var(--space-8);text-align:center;box-shadow:var(--shadow-md),inset 0 0 0 4px var(--color-surface),inset 0 0 0 5px oklch(from var(--color-gold) l c h/.35);min-height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--space-3);cursor:pointer}
+.flashcard .word{font-family:var(--font-display);font-size:clamp(1.9rem,1.4rem + 1.8vw,2.8rem);font-weight:700}
 .flashcard .hint{color:var(--color-text-muted);font-size:var(--text-sm)}
 .flashcard .translation{color:var(--color-primary);font-size:var(--text-lg);font-weight:600;display:none}
 .flashcard.flipped .translation{display:block}
@@ -157,8 +167,12 @@ textarea.writer:focus{border-color:var(--color-primary)}
 <div class="app">
   <aside class="sidebar">
     <div class="logo">
-      <svg viewBox="0 0 32 32" fill="none" aria-label="App logo"><circle cx="16" cy="16" r="14" stroke="currentColor" stroke-width="2"/><path d="M16 8v16M8 16h16" stroke="currentColor" stroke-width="2"/><path d="M11 11l10 10M21 11l-10 10" stroke="currentColor" stroke-width="1.5" opacity="0.5"/></svg>
-      <span>Español MYP4</span>
+      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-label="Leaf emblem">
+        <path d="M27 5C15 5 6 12 6 23c0 1.8.4 3.2 1 4C18 27 27 20 27 9c0-1.4 0-2.7 0-4z" fill="currentColor" fill-opacity="0.12"/>
+        <path d="M7 27C11 18 17 11 26 6"/>
+        <path d="M12 21c2 .5 4 .4 6-.3M15.5 15.5c2 .4 3.8.2 5.5-.6"/>
+      </svg>
+      <span>Español<em>MYP4 · El Bosque</em></span>
     </div>
     <nav class="navlist" id="nav">
       <button class="navitem active" data-section="overview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>Overview</button>
