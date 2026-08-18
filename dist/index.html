@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Español MYP4 — Practice Dashboard</title>
+<title>Español de Gitanjali — El Bosque</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..700&family=Cormorant+Garamond:ital,wght@0,400..700;1,400..600&family=Work+Sans:wght@300..700&display=swap" rel="stylesheet">
@@ -61,7 +61,7 @@ a,button,[role=button],input,select{transition:color var(--transition-interactiv
 .logo{display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-8);padding-bottom:var(--space-4);border-bottom:1px solid oklch(from var(--color-gold) l c h/.45)}
 .logo svg{width:34px;height:34px;color:var(--color-primary);flex-shrink:0}
 .logo span{font-family:var(--font-logo);font-weight:600;font-size:1.05rem;letter-spacing:.08em;color:var(--color-text)}
-.logo span em{font-style:normal;color:var(--color-gold);display:block;font-size:.6rem;letter-spacing:.32em;font-weight:500;margin-top:1px}
+.logo span em{font-style:normal;color:var(--color-gold);display:block;font-size:.58rem;letter-spacing:.13em;font-weight:500;margin-top:1px;white-space:nowrap}
 .navlist{display:flex;flex-direction:column;gap:var(--space-1)}
 .navitem{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-4);border-radius:var(--radius-md);color:var(--color-text-muted);font-size:var(--text-sm);text-align:left;width:100%}
 .navitem:hover{background:var(--color-surface-offset);color:var(--color-text)}
@@ -160,9 +160,23 @@ textarea.writer:focus{border-color:var(--color-primary)}
 .mobile-nav{overflow-x:auto;gap:var(--space-1);-webkit-overflow-scrolling:touch}
 .mobile-nav button{flex:1 0 auto;min-width:52px}
 .btn:disabled{opacity:.5;cursor:not-allowed}
+.dedication{text-align:center;border-color:oklch(from var(--color-gold) l c h/.55)}
+.dedication svg{width:28px;height:28px;color:var(--color-gold);margin:0 auto var(--space-2)}
+.dedication .dtitle{font-family:var(--font-display);font-size:var(--text-lg);font-weight:700;color:var(--color-primary)}
+[data-theme="dark"] .dedication .dtitle{color:var(--color-gold)}
+.dedication p{font-size:var(--text-sm);color:var(--color-text-muted);margin-top:var(--space-1)}
+.logro{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) 0;border-bottom:1px solid var(--color-divider);font-size:var(--text-sm)}
+.logro:last-child{border-bottom:none}
+.logro .medal{width:26px;height:26px;border-radius:var(--radius-full);display:flex;align-items:center;justify-content:center;flex-shrink:0;background:var(--color-surface-offset);color:var(--color-text-faint)}
+.logro.earned .medal{background:var(--color-gold-highlight);color:var(--color-gold)}
+.logro.earned{font-weight:600}
+.logro.locked{color:var(--color-text-faint)}
+.logro .when{margin-left:auto;font-size:var(--text-xs);color:var(--color-text-faint);font-variant-numeric:tabular-nums}
+.toast{position:fixed;top:14px;left:50%;transform:translateX(-50%) translateY(-10px);background:var(--color-surface);border:1px solid var(--color-gold);color:var(--color-text);padding:var(--space-3) var(--space-6);border-radius:var(--radius-full);box-shadow:var(--shadow-lg);font-size:var(--text-sm);font-weight:600;z-index:120;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
 </style>
-  <script type="module" crossorigin src="./assets/index-Be22kK8m.js"></script>
+  <script type="module" crossorigin src="./assets/index-DvN71FW_.js"></script>
 </head>
 <body>
 <div class="app">
@@ -173,7 +187,7 @@ textarea.writer:focus{border-color:var(--color-primary)}
         <path d="M7 27C11 18 17 11 26 6"/>
         <path d="M12 21c2 .5 4 .4 6-.3M15.5 15.5c2 .4 3.8.2 5.5-.6"/>
       </svg>
-      <span>Español<em>MYP4 · El Bosque</em></span>
+      <span>Español<em>El Bosque de Gitanjali</em></span>
     </div>
     <nav class="navlist" id="nav">
       <button class="navitem active" data-section="overview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>Overview</button>
@@ -228,6 +242,14 @@ textarea.writer:focus{border-color:var(--color-primary)}
       <div class="card">
         <h3>Why these activities?</h3>
         <p style="color:var(--color-text-muted);font-size:var(--text-sm)">Use the Phase toggle to switch between Phase 1–2 and Phase 3–4. Progress is saved on this device, so you can close the tab and continue tomorrow. Practice bars are activity evidence, not IB grades<span class="criteria-pill" style="margin-left:4px">A–D</span>.</p>
+      </div>
+      <div class="card dedication" style="margin-top:var(--space-6)">
+        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M27 5C15 5 6 12 6 23c0 1.8.4 3.2 1 4C18 27 27 20 27 9c0-1.4 0-2.7 0-4z" fill="currentColor" fill-opacity="0.15"/>
+          <path d="M7 27C11 18 17 11 26 6"/>
+        </svg>
+        <div class="dtitle">Hecho con cariño para Gitanjali</div>
+        <p>Built for your Spanish journey — a little better every day.</p>
       </div>
     </section>
     <section class="section" id="sec-review">
@@ -405,6 +427,11 @@ textarea.writer:focus{border-color:var(--color-primary)}
         <p class="subtitle" style="margin-bottom:var(--space-4)">Evidence from this device — not a substitute for teacher assessment</p>
         <div id="critBars"></div>
       </div>
+      <div class="card" style="margin-top:var(--space-6)">
+        <h3>Logros</h3>
+        <p class="subtitle" style="margin-bottom:var(--space-2)">Earned from real practice — they never expire</p>
+        <div id="logrosList"></div>
+      </div>
     </section>
   </main>
 </div>
@@ -417,5 +444,6 @@ textarea.writer:focus{border-color:var(--color-primary)}
   <button data-section="speaking">Speak</button>
   <button data-section="progress">Progress</button>
 </nav>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 </body>
 </html>

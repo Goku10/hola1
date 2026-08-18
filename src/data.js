@@ -1,3 +1,5 @@
+export const PERSONAL = { name: 'Gitanjali' };
+
 export const LEVEL_LABELS = { '12': 'Phase 1–2', '34': 'Phase 3–4' };
 export const WORD_GOALS = { '12': 60, '34': 120 };
 export const VOCAB_TARGET = { '12': 120, '34': 120 };
@@ -760,6 +762,8 @@ export const speakingByLevel = {
       'Mi asignatura favorita es el español.',
       'Los sábados voy al parque con mi perro.',
       'Por la noche ceno con mi familia y luego descanso.',
+      'Mi nombre es {name} y estudio español en el programa IB.',
+      'Yo soy {name} y me encanta aprender palabras nuevas.',
     ],
     open: [
       { id: '12-so-1', prompt: 'Preséntate: ¿cómo te llamas, cuántos años tienes y dónde vives?' },
@@ -784,6 +788,7 @@ export const speakingByLevel = {
       'Ojalá que más gente recicle y reduzca el plástico.',
       'La solidaridad es esencial cuando hablamos de migración y pobreza.',
       'El año pasado superé un desafío y gané mucha confianza.',
+      'Yo, {name}, creo que aprender idiomas abre puertas al mundo.',
     ],
     open: [
       { id: '34-so-1', prompt: 'Da tu opinión: ¿las redes sociales ayudan o perjudican a los jóvenes?' },
@@ -801,6 +806,19 @@ export const speakingByLevel = {
 export const writingPromptsByLevel = {
   '12': [
     {
+      id: '12-w0',
+      prompt: 'Preséntate, {name}: escribe sobre ti — tu nombre, tu edad, tu familia y algo que te hace especial.',
+      goal: 60,
+      checklist: [
+        'Started with Me llamo / Mi nombre es',
+        'Included age with tener (tengo … años)',
+        'One sentence about family',
+        'One thing that makes you special (me encanta / soy buena en…)',
+        'Checked accents (á, é, í, ó, ú, ñ)',
+      ],
+      model: 'Me llamo Gitanjali y tengo catorce años. Vivo con mi familia y estudio en un colegio del programa IB. Mi asignatura favorita es el español porque me encanta aprender palabras nuevas. Soy buena en escuchar a mis amigos. Algo especial de mí: nunca dejo de intentar, incluso cuando es difícil.',
+    },
+    {
       id: '12-w1',
       prompt: 'Escribe sobre tu familia. Usa el verbo "tener" y adjetivos posesivos (mi, tu, su).',
       goal: 60,
@@ -811,7 +829,7 @@ export const writingPromptsByLevel = {
         'Included at least one connector (y, pero, también)',
         'Used accents where needed (á, é, í, ó, ú, ñ)',
       ],
-      model: 'Me llamo Alex y tengo una familia pequeña. Tengo un hermano y una hermana. Mi madre es profesora y mi padre trabaja en un hospital. Mis abuelos viven cerca, pero no veo a mis tíos todos los días. También tenemos una mascota: un perro muy simpático.',
+      model: 'Me llamo Gitanjali y tengo una familia pequeña. Tengo un hermano y una hermana. Mi madre es profesora y mi padre trabaja en un hospital. Mis abuelos viven cerca, pero no veo a mis tíos todos los días. También tenemos una mascota: un perro muy simpático.',
     },
     {
       id: '12-w2',
@@ -1014,7 +1032,7 @@ export const writingPromptsByLevel = {
 };
 
 export function interpolateName(text, name) {
-  const n = (name && name.trim()) || 'Alex';
+  const n = (name && name.trim()) || PERSONAL.name;
   return text.replaceAll('{name}', n);
 }
 

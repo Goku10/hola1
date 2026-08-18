@@ -1,7 +1,7 @@
 # Español MYP4 — Project Memory
 
 ## Overview
-Interactive Spanish practice dashboard for an IB MYP4 Language Acquisition student. Vanilla JS + Vite SPA. Phase 1–2 (beginner) and Phase 3–4 (intermediate) via an in-app toggle.
+Interactive Spanish practice dashboard for an IB MYP4 Language Acquisition student — **Gitanjali**. Vanilla JS + Vite SPA. Phase 1–2 (beginner) and Phase 3–4 (intermediate) via an in-app toggle.
 
 Purpose: daily home practice that **compounds over time** on one device. It is a practice companion, not a gradebook and not a predicted IB 1–8 score.
 

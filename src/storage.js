@@ -5,10 +5,11 @@ export function emptyState() {
   return {
     version: 1,
     profile: {
-      name: '',
+      name: 'Gitanjali',
       level: '12',
       theme: '',
     },
+    achievements: {},
     streak: { dates: [] },
     vocab: { '12': {}, '34': {} },
     grammar: { '12': {}, '34': {} },

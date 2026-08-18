@@ -4,11 +4,30 @@ import {
   dueVocabIds, dueGrammarIds, buildReviewQueue, masteredCount, reviewedThisWeek,
 } from './srs.js';
 import {
-  LEVEL_LABELS, WORD_GOALS, VOCAB_TARGET,
+  PERSONAL, LEVEL_LABELS, WORD_GOALS, VOCAB_TARGET,
   vocabSetsByLevel, grammarSetsByLevel, listeningItemsByLevel,
   readingItemsByLevel, speakingByLevel, writingPromptsByLevel,
   interpolateName, allVocab, findVocab, allGrammarItems,
 } from './data.js';
+
+function displayName() {
+  return (state.profile?.name || '').trim() || PERSONAL.name;
+}
+
+function greetingTitle() {
+  const h = new Date().getHours();
+  const g = h < 12 ? '¡Buenos días' : h < 20 ? '¡Buenas tardes' : '¡Buenas noches';
+  return `${g}, ${displayName()}!`;
+}
+
+function overviewSubtitle() {
+  const due = dueCounts().totalDue;
+  const streak = countStreak();
+  const phase = `MYP4 · ${LEVEL_LABELS[currentLevel]}`;
+  if (due > 0) return `Tienes ${due} tarjeta${due === 1 ? '' : 's'} esperándote · ${phase}`;
+  if (streak > 0) return `Racha de ${streak} día${streak === 1 ? '' : 's'} — ¡sigue así! · ${phase}`;
+  return `Un poco cada día — eso es todo · ${phase}`;
+}
 
 const TITLE = {
   overview: ['¡Hola! Overview', ''],
@@ -161,7 +180,11 @@ function showSection(id, fromResume = false) {
   el.classList.add('active');
   document.querySelectorAll('.navitem').forEach((n) => n.classList.toggle('active', n.dataset.section === id));
   document.querySelectorAll('#mobileNav button').forEach((n) => n.classList.toggle('active', n.dataset.section === id));
-  const [title, sub] = TITLE[id];
+  let [title, sub] = TITLE[id];
+  if (id === 'overview') {
+    title = greetingTitle();
+    sub = overviewSubtitle();
+  }
   document.getElementById('pageTitle').textContent = title;
   document.getElementById('pageSubtitle').textContent = sub || `MYP4 · ${LEVEL_LABELS[currentLevel]} · Spanish Acquisition`;
   if (!fromResume) state.resume.section = id;
@@ -216,13 +239,18 @@ function refreshChrome() {
   document.getElementById('kpiSpeak').textContent = String(speakTotal);
   const streak = countStreak();
   document.getElementById('kpiStreak').textContent = String(streak);
-  document.getElementById('kpiStreakSub').textContent = streak ? 'keep it going!' : 'practice to start';
+  document.getElementById('kpiStreakSub').textContent = streak ? `¡sigue así, ${displayName()}!` : 'practice to start';
   const due = dueCounts();
   const badge = document.getElementById('reviewBadge');
   badge.textContent = due.totalDue ? String(due.totalDue) : '';
   badge.dataset.count = String(due.totalDue);
   updatePlanChecks();
   renderStreakGrid();
+  if (document.getElementById('sec-overview').classList.contains('active')) {
+    document.getElementById('pageTitle').textContent = greetingTitle();
+    document.getElementById('pageSubtitle').textContent = overviewSubtitle();
+  }
+  checkAchievements();
 }
 
 function shuffle(arr) {
@@ -684,7 +712,7 @@ function renderSpeaking() {
   document.querySelectorAll('#speakTabs .tab').forEach((t) => t.classList.toggle('active', t.dataset.speak === speakMode));
   document.getElementById('spModeHint').textContent = speakMode === 'echo'
     ? 'Say this phrase out loud. The match % is pronunciation practice, not Criterion C.'
-    : 'Answer in Spanish (2–4 sentences). Self-check if recognition fails.';
+    : `Contesta en español, ${displayName()} — 2 a 4 frases. Use the self-check if recognition fails.`;
   document.getElementById('spTarget').textContent = speakTarget();
   document.getElementById('spResult').style.display = 'none';
   document.getElementById('spSelfCheck').style.display = speakMode === 'open' ? 'flex' : 'none';
@@ -717,7 +745,7 @@ function wordCount(text) {
 
 function renderWriting() {
   const p = currentPrompt();
-  document.getElementById('wPromptText').textContent = p.prompt;
+  document.getElementById('wPromptText').textContent = interpolateName(p.prompt, state.profile.name);
   document.getElementById('wGoal').textContent = `Goal: ${p.goal} words`;
   const draft = state.writing.drafts[p.id] || '';
   document.getElementById('wText').value = draft;
@@ -755,6 +783,72 @@ function saveWritingDraft() {
   if (n >= 8) markStreak();
   persist();
   refreshChrome();
+}
+
+/* ---------- Logros (achievements) ---------- */
+function masteredBothLevels() {
+  return masteredCount(state.vocab['12'], 3) + masteredCount(state.vocab['34'], 3);
+}
+
+function anyReadingDone() {
+  return ['12', '34'].some((lv) => Object.values(state.reading[lv]).some((r) => (r.total || 0) > 0));
+}
+
+function anyDraftAtGoal() {
+  return Object.values(state.writing.drafts).some((t) => wordCount(t) >= 60);
+}
+
+const ACHIEVEMENTS = [
+  { id: 'streak3', label: 'Primer sendero — 3 días seguidos', test: () => countStreak() >= 3 },
+  { id: 'streak7', label: 'Constancia élfica — 7 días', test: () => countStreak() >= 7 },
+  { id: 'streak14', label: 'Guardiana del bosque — 14 días', test: () => countStreak() >= 14 },
+  { id: 'streak30', label: 'Luz del bosque — 30 días', test: () => countStreak() >= 30 },
+  { id: 'words10', label: 'Diez palabras dominadas', test: () => masteredBothLevels() >= 10 },
+  { id: 'words25', label: 'Veinticinco palabras dominadas', test: () => masteredBothLevels() >= 25 },
+  { id: 'words50', label: 'Cincuenta palabras dominadas', test: () => masteredBothLevels() >= 50 },
+  { id: 'words100', label: 'Cien palabras — hoja de oro', test: () => masteredBothLevels() >= 100 },
+  { id: 'firstReading', label: 'Primera lectura completada', test: () => anyReadingDone() },
+  { id: 'firstRecording', label: 'Primera grabación de voz', test: () => (state.speaking.echoCount + state.speaking.openCount) >= 1 },
+  { id: 'firstWriting', label: 'Primer escrito completo', test: () => anyDraftAtGoal() },
+];
+
+let toastTimer = null;
+function showToast(msg) {
+  const el = document.getElementById('toast');
+  if (!el) return;
+  el.textContent = msg;
+  el.classList.add('show');
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 6000);
+}
+
+function checkAchievements() {
+  let newest = null;
+  for (const a of ACHIEVEMENTS) {
+    if (!state.achievements[a.id] && a.test()) {
+      state.achievements[a.id] = today;
+      newest = a;
+    }
+  }
+  if (newest) {
+    showToast(`¡Enhorabuena, ${displayName()}! ${newest.label}`);
+    persist();
+    if (document.getElementById('sec-progress').classList.contains('active')) renderLogros();
+  }
+}
+
+function renderLogros() {
+  const wrap = document.getElementById('logrosList');
+  if (!wrap) return;
+  wrap.innerHTML = '';
+  const leaf = '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M27 5C15 5 6 12 6 23c0 1.8.4 3.2 1 4C18 27 27 20 27 9c0-1.4 0-2.7 0-4z" fill="currentColor" fill-opacity="0.25"/><path d="M7 27C11 18 17 11 26 6"/></svg>';
+  ACHIEVEMENTS.forEach((a) => {
+    const earnedOn = state.achievements[a.id];
+    const row = document.createElement('div');
+    row.className = 'logro ' + (earnedOn ? 'earned' : 'locked');
+    row.innerHTML = `<span class="medal">${leaf}</span><span>${a.label}</span><span class="when">${earnedOn || ''}</span>`;
+    wrap.appendChild(row);
+  });
 }
 
 /* ---------- Progress ---------- */
@@ -809,6 +903,7 @@ function renderProgress() {
   wrap.appendChild(barRow('B — Reading + vocab reviews', Math.round((readingAccuracy() + Math.round((100 * masteredCount(vocabMap(), 3)) / VOCAB_TARGET[currentLevel])) / 2)));
   wrap.appendChild(barRow('C — Speaking (attempts toward 15)', Math.min(100, Math.round((((state.speaking.echoCount || 0) + (state.speaking.openCount || 0)) / 15) * 100))));
   wrap.appendChild(barRow('D — Grammar accuracy + writing drafts', Math.round((((gAcc || 0) + Math.min(100, drafts * 20)) / 2))));
+  renderLogros();
 }
 
 function switchLevel(level) {
@@ -843,7 +938,8 @@ document.querySelector('[data-theme-toggle]').addEventListener('click', () => {
   persist();
 });
 
-document.getElementById('learnerName').value = state.profile.name || '';
+if (!(state.profile.name || '').trim()) state.profile.name = PERSONAL.name;
+document.getElementById('learnerName').value = state.profile.name;
 document.getElementById('learnerName').addEventListener('input', (e) => {
   state.profile.name = e.target.value;
   persist();
