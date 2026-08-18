@@ -12,9 +12,20 @@ GitHub: `Goku10/hola1` (Pages typically from `main`). Live users only open the p
 - **Bundler:** Vite 5.4 (`base: './'`, port 5173)
 - **Backend:** Supabase **edge functions only** (TTS). No database tables, no Auth
 - **TTS:** `POST /functions/v1/tts` (Google Translate TTS proxy), falls back to `speechSynthesis`
+- **Fonts:** Cormorant Garamond (display), Cinzel (logo wordmark), Work Sans (body — keep for crisp á/ñ)
+
+## Theme ("Elvish" green & gold)
+All colors are CSS custom properties in `index.html` (`:root`/`[data-theme="light"]` and `[data-theme="dark"]`).
+
+- **Light:** parchment bg `#f3efdd`, moss-green primary `#3e6b39`, gold accent `#a98a2f`, deep forest text `#22301c`
+- **Dark:** woodland night bg `#0f180e`, leaf-green primary `#93c477`, gold `#dcc06c`; KPI numbers render gold in dark mode
+- **Ornaments:** gold hairline on card tops (`.card::before`), gold-tipped progress bars (green→gold gradient), gold inset marker on active nav, gilded double border on flashcards, faint radial gold/green glows on `body`
+- **Logo:** leaf SVG + Cinzel wordmark "Español / MYP4 · El Bosque" (gold sub-line)
+- Theme choice (light/dark) persists in `localStorage` via `profile.theme`
+- Rule: keep Spanish content in a clear readable font; do not use decorative type (e.g. Tengwar) for learning text
 
 ## Architecture
-- `index.html` — layout + CSS; `<script type="module" src="./src/app.js">`
+- `index.html` — layout + CSS (theme tokens live here); `<script type="module" src="./src/app.js">`
 - `src/data.js` — content banks (vocab, grammar, listening, reading, speaking, writing)
 - `src/storage.js` — persist/load `localStorage` key `espanol-myp4-v1`
 - `src/srs.js` — Leitner boxes and due dates
