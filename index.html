@@ -333,7 +333,37 @@ flashcard.addEventListener('click',()=>flashcard.classList.toggle('flipped'));
 document.getElementById('fcNext').onclick=()=>{fcIndex=(fcIndex+1)%vocabSets[currentTopic].length;renderFlashcard();};
 document.getElementById('fcPrev').onclick=()=>{fcIndex=(fcIndex-1+vocabSets[currentTopic].length)%vocabSets[currentTopic].length;renderFlashcard();};
 document.getElementById('fcKnow').onclick=()=>{wordsKnown.add(vocabSets[currentTopic][fcIndex][0]);document.getElementById('kpiWords').textContent=wordsKnown.size;document.getElementById('pVocab').textContent=wordsKnown.size+' / 60';document.getElementById('fcNext').click();};
-function speak(text,lang){if('speechSynthesis' in window){const u=new SpeechSynthesisUtterance(text);u.lang=lang||'es-ES';u.rate=0.9;speechSynthesis.cancel();speechSynthesis.speak(u);}}
+const synth=window.speechSynthesis;
+let cachedVoices=[];
+function loadVoices(){if(synth){const v=synth.getVoices();if(v&&v.length)cachedVoices=v;}return cachedVoices;}
+if(synth&&typeof synth.onvoiceschanged!=='undefined'){synth.onvoiceschanged=loadVoices;}
+loadVoices();
+function pickSpanishVoice(){
+  const voices=loadVoices();
+  if(!voices.length)return null;
+  const spanish=voices.filter(v=>/es/i.test(v.lang));
+  if(!spanish.length)return null;
+  const prefer=[
+    v=>/Google/i.test(v.name),
+    v=>/Microsoft|Natural|Neural|Premium|Enhanced/i.test(v.name),
+    v=>/Mónica|Paulina|Helena|Laura|Diego|Jorge|Enrique/i.test(v.name),
+    v=>/es-ES/i.test(v.lang),
+    v=>/local/i.test(v.localService?'local':'')
+  ];
+  for(const test of prefer){const found=spanish.find(test);if(found)return found;}
+  return spanish[0];
+}
+function speak(text,lang){
+  if(!synth)return;
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang=lang||'es-ES';
+  const voice=pickSpanishVoice();
+  if(voice){u.voice=voice;u.lang=voice.lang;}
+  u.rate=0.85;u.pitch=1;
+  u.volume=1;
+  synth.cancel();
+  synth.speak(u);
+}
 document.getElementById('fcSpeak').onclick=()=>speak(fcWord.textContent.length?fcWord.textContent:fcTranslation.textContent);
 let quizCorrect=0, quizTotal=0;
 function newQuizQuestion(){
