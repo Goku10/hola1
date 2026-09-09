@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #f4f8fc;
+  --foreground: #0b1c33;
+  --card: #ffffff;
+  --muted: #64748b;
+  --ring: #14b8a6;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  min-height: 100vh;
+}
+
+.bg-mesh {
+  background:
+    radial-gradient(ellipse 80% 60% at 10% -10%, rgba(56, 189, 248, 0.35), transparent 50%),
+    radial-gradient(ellipse 70% 50% at 90% 0%, rgba(20, 184, 166, 0.28), transparent 45%),
+    radial-gradient(ellipse 50% 40% at 50% 100%, rgba(99, 102, 241, 0.12), transparent 50%),
+    linear-gradient(180deg, #eef6ff 0%, #f4f8fc 40%, #ffffff 100%);
+}
+
+.chip {
+  @apply inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold transition-all;
+}
+
+.stat-ring {
+  @apply relative flex h-24 w-24 items-center justify-center rounded-full;
+  background: conic-gradient(var(--ring-color, #14b8a6) calc(var(--pct, 0) * 1%), #e2e8f0 0);
+}
+
+.stat-ring::before {
+  content: "";
+  @apply absolute inset-2 rounded-full bg-white;
+}
