@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import type { SubjectChipKind } from "@/lib/types";
+import { useI18n } from "@/lib/i18n";
 
 const styles: Record<SubjectChipKind, string> = {
   mandatory: "bg-navy-900 text-white",
@@ -10,15 +11,6 @@ const styles: Record<SubjectChipKind, string> = {
   completed: "bg-emerald-500 text-white",
   missing: "bg-rose-danger text-white",
   unavailable: "bg-slate-300 text-slate-600 line-through",
-};
-
-const labelsNb: Record<SubjectChipKind, string> = {
-  mandatory: "Fellesfag",
-  required: "Krav",
-  recommended: "Anbefalt",
-  completed: "Ferdig",
-  missing: "Mangler",
-  unavailable: "Ikke tilbudt",
 };
 
 export function SubjectChip({
@@ -30,6 +22,8 @@ export function SubjectChip({
   kind: SubjectChipKind;
   onClick?: () => void;
 }) {
+  const { t } = useI18n();
+  const kindLabel = t.chips[kind];
   return (
     <button
       type="button"
@@ -39,9 +33,9 @@ export function SubjectChip({
         styles[kind],
         onClick ? "cursor-pointer" : "cursor-default"
       )}
-      title={labelsNb[kind]}
+      title={kindLabel}
     >
-      <span className="opacity-80">{labelsNb[kind]}</span>
+      <span className="opacity-80">{kindLabel}</span>
       <span>{label}</span>
     </button>
   );
@@ -54,17 +48,12 @@ export function StatusTile({
   status: "possible" | "at_risk" | "blocked" | "complete";
   label: string;
 }) {
+  const { t } = useI18n();
   const colors = {
     complete: "from-emerald-400 to-teal",
     possible: "from-teal to-sky-accent",
     at_risk: "from-amber-warn to-orange-400",
     blocked: "from-rose-danger to-rose-600",
-  };
-  const short = {
-    complete: "OK",
-    possible: "Åpen",
-    at_risk: "Sjekk",
-    blocked: "Stopp",
   };
   return (
     <div
@@ -73,7 +62,9 @@ export function StatusTile({
         colors[status]
       )}
     >
-      <span className="font-display text-2xl font-black">{short[status]}</span>
+      <span className="font-display text-2xl font-black">
+        {t.statusShort[status]}
+      </span>
       <span className="text-sm font-semibold opacity-95">{label}</span>
     </div>
   );

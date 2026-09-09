@@ -17,6 +17,7 @@ import { Card, Badge } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { DemoNotice } from "@/components/layout/SiteHeader";
 import { cn } from "@/lib/utils";
+import { useI18n } from "@/lib/i18n";
 
 type Tab =
   | "careers"
@@ -29,19 +30,20 @@ type Tab =
   | "sources"
   | "versions";
 
-const tabs: { id: Tab; label: string }[] = [
-  { id: "careers", label: "Karrierer" },
-  { id: "codes", label: "Opptakskoder" },
-  { id: "subjects", label: "Fag" },
-  { id: "prereqs", label: "Forkrav" },
-  { id: "schools", label: "Skoler" },
-  { id: "institutions", label: "Studiesteder" },
-  { id: "cutoffs", label: "Poeng" },
-  { id: "sources", label: "Kilder" },
-  { id: "versions", label: "Versjoner" },
+const tabIds: Tab[] = [
+  "careers",
+  "codes",
+  "subjects",
+  "prereqs",
+  "schools",
+  "institutions",
+  "cutoffs",
+  "sources",
+  "versions",
 ];
 
 export default function AdminPage() {
+  const { t } = useI18n();
   const [tab, setTab] = useState<Tab>("careers");
   const [locked] = useState(true);
 
@@ -49,32 +51,30 @@ export default function AdminPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <Badge tone="amber">Demo — ingen ekte innlogging</Badge>
+          <Badge tone="amber">{t.admin.demoBadge}</Badge>
           <h1 className="mt-2 font-display text-3xl font-extrabold text-navy-900">
-            Datastyring
+            {t.admin.title}
           </h1>
-          <p className="text-sm text-slate-500">
-            Klar for senere Supabase-integrasjon
-          </p>
+          <p className="text-sm text-slate-500">{t.admin.subtitle}</p>
         </div>
         <Button variant="outline" disabled>
-          {locked ? "🔒 Låst (MVP)" : "Rediger"}
+          {locked ? `🔒 ${t.admin.locked}` : t.admin.edit}
         </Button>
       </div>
       <DemoNotice />
 
       <div className="flex gap-2 overflow-x-auto pb-1">
-        {tabs.map((t) => (
+        {tabIds.map((id) => (
           <button
-            key={t.id}
+            key={id}
             type="button"
-            onClick={() => setTab(t.id)}
+            onClick={() => setTab(id)}
             className={cn(
               "shrink-0 rounded-full px-3 py-1.5 text-xs font-bold",
-              tab === t.id ? "bg-navy-900 text-white" : "bg-white shadow-sm"
+              tab === id ? "bg-navy-900 text-white" : "bg-white shadow-sm"
             )}
           >
-            {t.label}
+            {t.admin.tabs[id]}
           </button>
         ))}
       </div>
@@ -82,7 +82,7 @@ export default function AdminPage() {
       <Card className="overflow-x-auto">
         {tab === "careers" && (
           <Table
-            headers={["ID", "Navn", "Felt", "Kode", "Konkurranse"]}
+            headers={["ID", "Name", "Field", "Code", "Competition"]}
             rows={careers.map((c) => [
               c.id,
               c.name.nb,
@@ -94,7 +94,7 @@ export default function AdminPage() {
         )}
         {tab === "codes" && (
           <Table
-            headers={["Kode", "Navn", "Regelversjon", "Kilder"]}
+            headers={["Code", "Name", "Rule version", "Sources"]}
             rows={admissionCodes.map((a) => [
               a.code,
               a.name.nb,
@@ -105,7 +105,7 @@ export default function AdminPage() {
         )}
         {tab === "subjects" && (
           <Table
-            headers={["ID", "Kode", "Navn", "Kategori", "År"]}
+            headers={["ID", "Code", "Name", "Category", "Years"]}
             rows={subjects.map((s) => [
               s.id,
               s.code,
@@ -117,7 +117,7 @@ export default function AdminPage() {
         )}
         {tab === "prereqs" && (
           <Table
-            headers={["Fag", "Krever"]}
+            headers={["Subject", "Requires"]}
             rows={prerequisites.map((p) => [
               p.subjectId,
               p.requires.join(", "),
@@ -126,7 +126,7 @@ export default function AdminPage() {
         )}
         {tab === "schools" && (
           <Table
-            headers={["Skole", "Fylke", "Fag tilbudt"]}
+            headers={["School", "County", "Subjects offered"]}
             rows={schools.map((s) => {
               const off = schoolOfferings.find((o) => o.schoolId === s.id);
               return [
@@ -139,7 +139,7 @@ export default function AdminPage() {
         )}
         {tab === "institutions" && (
           <Table
-            headers={["Kort", "Navn", "By", "Type"]}
+            headers={["Short", "Name", "City", "Type"]}
             rows={institutions.map((i) => [
               i.shortName,
               i.name,
@@ -150,20 +150,20 @@ export default function AdminPage() {
         )}
         {tab === "cutoffs" && (
           <Table
-            headers={["Karriere", "Sted", "År", "Kvote", "Poeng", "Historisk"]}
+            headers={["Career", "Institution", "Year", "Quota", "Points", "Historical"]}
             rows={cutoffs.map((c) => [
               c.careerId,
               c.institutionId,
               String(c.year),
               c.quota,
               c.points == null ? "—" : String(c.points),
-              "ja",
+              "yes",
             ])}
           />
         )}
         {tab === "sources" && (
           <Table
-            headers={["Navn", "Kategori", "URL", "Sist gjennomgått"]}
+            headers={["Name", "Category", "URL", "Last reviewed"]}
             rows={sources.map((s) => [
               s.name,
               s.category,
@@ -174,7 +174,7 @@ export default function AdminPage() {
         )}
         {tab === "versions" && (
           <Table
-            headers={["ID", "Label", "Sist gjennomgått", "Notat"]}
+            headers={["ID", "Label", "Last reviewed", "Note"]}
             rows={ruleVersions.map((r) => [
               r.id,
               r.label,

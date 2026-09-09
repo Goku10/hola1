@@ -13,7 +13,7 @@ Persistent project memory for Cloud Agents and local sessions.
 | EduNor push status | **Blocked** — Cursor GitHub App installation only lists `Goku10/hola1` |
 | Stack | Next.js App Router, TypeScript, Tailwind, Vitest |
 | Default demo | Grade 10 · doctor + engineer |
-| Last memory update | 2026-09-09 (session end / sync attempt) |
+| Last memory update | 2026-09-09 — full NB/EN UI toggle |
 
 ## Sync log
 
@@ -23,6 +23,8 @@ Persistent project memory for Cloud Agents and local sessions.
 | 2026-09-09 | First push attempt to EduNor `main` | `edunor` | 403 `cursor[bot]` denied |
 | 2026-09-09 | Retry after user said access granted | `edunor` | Still 403 — installation repos = only `hola1` |
 | 2026-09-09 | Added memory module | local → pending push | This file |
+
+| 2026-09-09 | Full NB/EN language toggle across UI | origin | OK |
 
 ## How to unblock EduNor
 
@@ -41,7 +43,7 @@ When EduNor works: `git push -u edunor HEAD:main` (or current feature branch), t
 
 ## Product memory (stable facts)
 
-- Visual-first UI for ages 15–20; Norwegian Bokmål default + EN toggle
+- Visual-first UI for ages 15–20; Norwegian Bokmål default + full EN toggle (persisted)
 - Rules engine: AND/OR requirements, S/R maths ban, prerequisites, school offerings
 - Doctor+engineer plan: Vg1 **1T** · Vg2 **R1 + Fysikk 1 + Kjemi 1** · Vg3 **R2 + Kjemi 2**
 - Historical poenggrenser are **example** data — never claim live Samordna

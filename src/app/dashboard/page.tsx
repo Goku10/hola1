@@ -149,13 +149,13 @@ export default function DashboardPage() {
             {school && <Badge tone="muted">{school.name}</Badge>}
           </div>
           <h1 className="font-display text-3xl font-extrabold text-navy-900 md:text-4xl">
-            Din plan
+            {t.dashboard.title}
           </h1>
           <p className="mt-1 text-sm text-slate-500">
-            {recommendation.demanding ? "Krevende løp · " : ""}
+            {recommendation.demanding ? `${t.dashboard.demanding} · ` : ""}
             {recommendation.confirmWithSchool
-              ? "Bekreft fag med skolen"
-              : "Plan klar for gjennomgang"}
+              ? t.dashboard.confirmSchool
+              : t.dashboard.planReady}
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
@@ -164,11 +164,11 @@ export default function DashboardPage() {
             variant="outline"
             onClick={() => loadScenario("doctor-engineer-g10")}
           >
-            Last: Lege+Ingeniør
+            {t.dashboard.loadDoctorEngineer}
           </Button>
           <Button asChild size="sm" variant="teal">
             <Link href="/onboarding">
-              Endre profil <ArrowRight className="h-4 w-4" />
+              {t.dashboard.editProfile} <ArrowRight className="h-4 w-4" />
             </Link>
           </Button>
         </div>
@@ -179,29 +179,29 @@ export default function DashboardPage() {
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
         <StatCard
           value={profile.goalIds.length}
-          label="Mål valgt"
+          label={t.dashboard.goalsSelected}
           color="#0f766e"
         />
         <StatCard
           value={eligibility.completedCount}
-          label="Krav dekket"
+          label={t.dashboard.requirementsMet}
           color="#14b8a6"
         />
         <StatCard
           value={eligibility.remainingCount}
-          label="Gjenstår"
+          label={t.dashboard.remaining}
           color="#f59e0b"
         />
         <StatCard
           value={eligibility.pathwaysOpen}
-          label="Veier åpne"
+          label={t.dashboard.pathwaysOpen}
           color="#38bdf8"
         />
       </div>
 
       <section>
         <h2 className="mb-3 font-display text-lg font-bold text-navy-900">
-          Status
+          {t.dashboard.status}
         </h2>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {eligibility.goals.map((g) => {
@@ -230,7 +230,7 @@ export default function DashboardPage() {
         <div className="mb-3 flex items-center gap-2">
           <Route className="h-5 w-5 text-teal" />
           <h2 className="font-display text-lg font-bold text-navy-900">
-            Treårsvei
+            {t.dashboard.threeYear}
           </h2>
         </div>
         <div className="grid gap-4 md:grid-cols-3">
@@ -248,7 +248,7 @@ export default function DashboardPage() {
                   {year.title}
                 </span>
                 <span className="rounded-full bg-sky-soft px-2 py-0.5 text-[10px] font-bold text-sky-800">
-                  STEG {idx + 1}
+                  {t.dashboard.step} {idx + 1}
                 </span>
               </div>
               <div className="flex flex-wrap gap-2">
@@ -283,7 +283,7 @@ export default function DashboardPage() {
         <div className="mb-3 flex items-center gap-2">
           <Building2 className="h-5 w-5 text-sky-accent" />
           <h2 className="font-display text-lg font-bold text-navy-900">
-            Studiesteder & poeng
+            {t.dashboard.institutions}
           </h2>
           <Badge tone="amber">{t.historical}</Badge>
         </div>
@@ -318,14 +318,14 @@ export default function DashboardPage() {
           })}
           {relatedCutoffs.length === 0 && (
             <Card className="text-sm text-slate-500">
-              Ingen poenggrense (f.eks. yrkesfag)
+              {t.dashboard.noCutoff}
             </Card>
           )}
         </div>
         {relatedCutoffs.some((c) => c.points != null) && (
           <Card className="mt-3 h-48">
             <p className="mb-2 text-xs font-bold text-slate-500">
-              Historiske poeng (eksempel)
+              {t.dashboard.historicalPoints}
             </p>
             <ResponsiveContainer width="100%" height="85%">
               <BarChart
@@ -351,12 +351,12 @@ export default function DashboardPage() {
         <Card>
           <div className="mb-2 flex items-center gap-2 font-display font-bold text-navy-900">
             <AlertTriangle className="h-4 w-4 text-amber-warn" />
-            Advarsler
+            {t.dashboard.warnings}
           </div>
           <div className="flex flex-wrap gap-2">
             {(eligibility.warnings.length
               ? eligibility.warnings
-              : ["Ingen kritiske advarsler"]
+              : [t.dashboard.noWarnings]
             ).map((w) => (
               <Badge key={w} tone={eligibility.warnings.length ? "amber" : "muted"}>
                 {w}
@@ -366,10 +366,10 @@ export default function DashboardPage() {
         </Card>
         <Card>
           <div className="mb-2 font-display font-bold text-navy-900">
-            Alternative veier
+            {t.dashboard.altRoutes}
           </div>
           <div className="flex flex-wrap gap-2">
-            {["Privatist", "Forkurs", "Y-veien", "Påbygg"].map((a) => (
+            {[t.dashboard.privatist, t.dashboard.forkurs, t.dashboard.yvei, t.dashboard.supplement].map((a) => (
               <Badge key={a} tone="sky">
                 {a}
               </Badge>
@@ -380,7 +380,7 @@ export default function DashboardPage() {
 
       <Card>
         <div className="mb-3 font-display font-bold text-navy-900">
-          Offisielle kilder
+          {t.dashboard.sources}
         </div>
         <div className="flex flex-wrap gap-2">
           {sources.map((s) => (
@@ -408,7 +408,7 @@ export default function DashboardPage() {
             variant="ghost"
             onClick={() => loadScenario(id)}
           >
-            Eksempel: {id}
+            {t.dashboard.example}: {id}
           </Button>
         ))}
       </div>
@@ -425,7 +425,7 @@ export default function DashboardPage() {
           >
             <div className="mb-2 flex items-center gap-2 font-display text-lg font-bold">
               <HelpCircle className="h-5 w-5 text-teal" />
-              Hvorfor dette faget?
+              {t.dashboard.whySubject}
             </div>
             <p className="text-sm leading-relaxed text-navy-800">
               {explainSubjectWhy(why, profile, ctx)}
@@ -435,7 +435,7 @@ export default function DashboardPage() {
               variant="teal"
               onClick={() => setWhy(null)}
             >
-              Lukke
+              {t.dashboard.close}
             </Button>
           </Card>
         </div>

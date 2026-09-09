@@ -11,16 +11,27 @@ import { collectRequiredSubjects } from "@/lib/engine";
 import { cn } from "@/lib/utils";
 import { pathways as pathwaySeeds } from "@/lib/data/seeds/meta";
 
-const scenarios = [
-  { id: "doctor", label: "Kun lege", careerIds: ["doctor"] },
-  { id: "engineer", label: "Kun ingeniør", careerIds: ["engineer"] },
-  { id: "both", label: "Lege + ingeniør", careerIds: ["doctor", "engineer"] },
-] as const;
+const scenarioIds = ["doctor", "engineer", "both"] as const;
 
 export default function ComparePage() {
   const { lang, t } = useI18n();
   const [selected, setSelected] = useState<string[]>(["doctor", "engineer"]);
-  const [scenario, setScenario] = useState<(typeof scenarios)[number]["id"]>("both");
+  const [scenario, setScenario] =
+    useState<(typeof scenarioIds)[number]>("both");
+
+  const scenarios = [
+    { id: "doctor" as const, label: t.compare.doctorOnly, careerIds: ["doctor"] },
+    {
+      id: "engineer" as const,
+      label: t.compare.engineerOnly,
+      careerIds: ["engineer"],
+    },
+    {
+      id: "both" as const,
+      label: t.compare.both,
+      careerIds: ["doctor", "engineer"],
+    },
+  ];
 
   const toggle = (id: string) => {
     setSelected((prev) => {
@@ -53,9 +64,9 @@ export default function ComparePage() {
     <div className="space-y-6">
       <div>
         <h1 className="font-display text-3xl font-extrabold text-navy-900">
-          Sammenlign
+          {t.compare.title}
         </h1>
-        <p className="text-sm text-slate-500">Opp til 3 karrierer</p>
+        <p className="text-sm text-slate-500">{t.compare.subtitle}</p>
       </div>
       <DemoNotice />
 
@@ -80,7 +91,7 @@ export default function ComparePage() {
       {sharedSubjects.length > 0 && (
         <Card className="bg-gradient-to-r from-teal-soft/80 to-sky-soft/80">
           <p className="text-xs font-bold uppercase tracking-wide text-teal-dark">
-            Felles krav — bevarer flest muligheter
+            {t.compare.shared}
           </p>
           <div className="mt-2 flex flex-wrap gap-2">
             {sharedSubjects.map((sid) => (
@@ -113,7 +124,7 @@ export default function ComparePage() {
 
           {[
             {
-              row: "GSU",
+              row: t.compare.gsu,
               cell: (id: string) => {
                 const code = admissionCodes.find(
                   (a) =>
@@ -123,16 +134,16 @@ export default function ComparePage() {
                 const has =
                   code &&
                   JSON.stringify(code.requirements).includes('"gsu"');
-                return has ? "Ja" : "—";
+                return has ? t.onboarding.yes : "—";
               },
             },
             {
-              row: "Konkurranse",
+              row: t.compare.competition,
               cell: (id: string) =>
                 careers.find((c) => c.id === id)?.competitiveness ?? "—",
             },
             {
-              row: "Krav-fag",
+              row: t.compare.required,
               cell: (id: string) => {
                 const career = careers.find((c) => c.id === id);
                 const code = admissionCodes.find(
@@ -145,7 +156,7 @@ export default function ComparePage() {
               },
             },
             {
-              row: "Anbefalt",
+              row: t.compare.recommended,
               cell: (id: string) => {
                 const career = careers.find((c) => c.id === id);
                 return (
@@ -156,7 +167,7 @@ export default function ComparePage() {
               },
             },
             {
-              row: "Poeng (eks.)",
+              row: t.compare.points,
               cell: (id: string) => {
                 const pts = cutoffs
                   .filter((c) => c.careerId === id && c.points != null)
@@ -184,7 +195,9 @@ export default function ComparePage() {
       </div>
 
       <section>
-        <h2 className="mb-3 font-display text-lg font-bold">Scenario</h2>
+        <h2 className="mb-3 font-display text-lg font-bold">
+          {t.compare.scenario}
+        </h2>
         <div className="mb-4 flex flex-wrap gap-2">
           {scenarios.map((s) => (
             <Button
@@ -221,8 +234,7 @@ export default function ComparePage() {
             ))}
           </div>
           <p className="mt-4 text-xs text-sky-100/80">
-            Timeplan og fagtilbud må bekreftes med valgt skole. {t.historical} —
-            ikke garanti.
+            {t.compare.confirmSchool}
           </p>
         </Card>
       </section>

@@ -47,16 +47,16 @@ const iconMap: Record<string, React.ElementType> = {
   hammer: Hammer,
 };
 
-const fields: { id: InterestId | "all"; label: string }[] = [
-  { id: "all", label: "Alle" },
-  { id: "health", label: "Helse" },
-  { id: "engineering", label: "Ingeniør" },
-  { id: "it", label: "IT" },
-  { id: "law", label: "Juss" },
-  { id: "education", label: "Utdanning" },
-  { id: "business", label: "Økonomi" },
-  { id: "trades", label: "Yrkesfag" },
-  { id: "arts", label: "Kunst" },
+const fieldIds: (InterestId | "all")[] = [
+  "all",
+  "health",
+  "engineering",
+  "it",
+  "law",
+  "education",
+  "business",
+  "trades",
+  "arts",
 ];
 
 const bandTone: Record<CompetitivenessBand, "muted" | "teal" | "amber" | "rose" | "sky"> = {
@@ -65,14 +65,6 @@ const bandTone: Record<CompetitivenessBand, "muted" | "teal" | "amber" | "rose" 
   high: "amber",
   very_high: "rose",
   na: "muted",
-};
-
-const bandLabel: Record<CompetitivenessBand, string> = {
-  low: "Lav",
-  medium: "Middels",
-  high: "Høy",
-  very_high: "Svært høy",
-  na: "N/A",
 };
 
 export default function CareersPage() {
@@ -98,35 +90,33 @@ export default function CareersPage() {
     <div className="space-y-6">
       <div>
         <h1 className="font-display text-3xl font-extrabold text-navy-900 md:text-4xl">
-          Utforsk karrierer
+          {t.careers.title}
         </h1>
-        <p className="mt-1 text-sm text-slate-500">
-          Krav varierer per sted og opptaksår.
-        </p>
+        <p className="mt-1 text-sm text-slate-500">{t.careers.subtitle}</p>
       </div>
       <DemoNotice />
 
       <input
         value={q}
         onChange={(e) => setQ(e.target.value)}
-        placeholder="Søk…"
+        placeholder={t.careers.search}
         className="w-full rounded-2xl border-0 bg-white px-4 py-3 text-sm shadow-card outline-none ring-2 ring-transparent focus:ring-teal"
       />
 
       <div className="flex gap-2 overflow-x-auto pb-1">
-        {fields.map((f) => (
+        {fieldIds.map((id) => (
           <button
-            key={f.id}
+            key={id}
             type="button"
-            onClick={() => setField(f.id)}
+            onClick={() => setField(id)}
             className={cn(
               "shrink-0 rounded-full px-4 py-2 text-xs font-bold transition",
-              field === f.id
+              field === id
                 ? "bg-navy-900 text-white"
                 : "bg-white text-navy-700 shadow-sm"
             )}
           >
-            {f.label}
+            {t.careers.fields[id]}
           </button>
         ))}
       </div>
@@ -159,7 +149,7 @@ export default function CareersPage() {
                   <Icon className="h-6 w-6" />
                 </div>
                 <Badge tone={bandTone[career.competitiveness]}>
-                  {bandLabel[career.competitiveness]}
+                  {t.careers.band[career.competitiveness]}
                 </Badge>
               </div>
               <h2 className="font-display text-xl font-bold text-navy-900">
@@ -184,7 +174,7 @@ export default function CareersPage() {
                 ))}
                 {reqs.length === 0 && (
                   <span className="text-[10px] font-bold text-slate-400">
-                    Yrkesfag / annet
+                    {t.careers.vocationalOther}
                   </span>
                 )}
               </div>
@@ -192,10 +182,12 @@ export default function CareersPage() {
               {expanded && (
                 <div className="mt-3 space-y-2 border-t border-slate-100 pt-3">
                   <p className="text-[11px] font-semibold text-slate-500">
-                    {t.historical} poeng
+                    {t.careers.historicalPoints}
                   </p>
                   {careerCutoffs.length === 0 && (
-                    <p className="text-xs text-slate-400">Ingen poengdata</p>
+                    <p className="text-xs text-slate-400">
+                      {t.careers.noPoints}
+                    </p>
                   )}
                   {careerCutoffs.map((c) => {
                     const inst = institutions.find(
@@ -225,11 +217,11 @@ export default function CareersPage() {
                 >
                   {selected ? (
                     <>
-                      <Check className="h-4 w-4" /> Valgt
+                      <Check className="h-4 w-4" /> {t.careers.selected}
                     </>
                   ) : (
                     <>
-                      <Plus className="h-4 w-4" /> Legg til
+                      <Plus className="h-4 w-4" /> {t.careers.add}
                     </>
                   )}
                 </Button>
@@ -238,7 +230,7 @@ export default function CareersPage() {
                   variant="outline"
                   onClick={() => setOpenId(expanded ? null : career.id)}
                 >
-                  {expanded ? "Skjul" : "Mer"}
+                  {expanded ? t.careers.less : t.careers.more}
                 </Button>
               </div>
             </Card>

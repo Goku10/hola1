@@ -13,21 +13,58 @@ import {
 } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/card";
 
 const links = [
-  { href: "/", key: "home", icon: Home },
-  { href: "/onboarding", key: "onboard", icon: UserRound },
-  { href: "/karrierer", key: "careers", icon: Compass },
-  { href: "/dashboard", key: "dashboard", icon: LayoutDashboard },
-  { href: "/sammenlign", key: "compare", icon: GitCompareArrows },
-  { href: "/admin", key: "admin", icon: Settings2 },
-] as const;
+  { href: "/", key: "home" as const, icon: Home },
+  { href: "/onboarding", key: "onboard" as const, icon: UserRound },
+  { href: "/karrierer", key: "careers" as const, icon: Compass },
+  { href: "/dashboard", key: "dashboard" as const, icon: LayoutDashboard },
+  { href: "/sammenlign", key: "compare" as const, icon: GitCompareArrows },
+  { href: "/admin", key: "admin" as const, icon: Settings2 },
+];
+
+export function LanguageToggle() {
+  const { lang, setLang, t } = useI18n();
+  return (
+    <div
+      className="inline-flex items-center rounded-full border border-navy-800/15 bg-white p-0.5 shadow-sm"
+      role="group"
+      aria-label={t.language}
+    >
+      <button
+        type="button"
+        onClick={() => setLang("nb")}
+        className={cn(
+          "rounded-full px-3 py-1.5 text-xs font-bold transition",
+          lang === "nb"
+            ? "bg-navy-900 text-white"
+            : "text-navy-700 hover:bg-sky-soft"
+        )}
+        aria-pressed={lang === "nb"}
+      >
+        NO
+      </button>
+      <button
+        type="button"
+        onClick={() => setLang("en")}
+        className={cn(
+          "rounded-full px-3 py-1.5 text-xs font-bold transition",
+          lang === "en"
+            ? "bg-navy-900 text-white"
+            : "text-navy-700 hover:bg-sky-soft"
+        )}
+        aria-pressed={lang === "en"}
+      >
+        EN
+      </button>
+    </div>
+  );
+}
 
 export function SiteHeader() {
   const pathname = usePathname();
-  const { t, lang, setLang } = useI18n();
+  const { t } = useI18n();
 
   return (
     <header className="sticky top-0 z-40 border-b border-white/50 bg-white/75 backdrop-blur-xl">
@@ -60,15 +97,10 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <Badge tone="sky">{t.demo}</Badge>
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={() => setLang(lang === "nb" ? "en" : "nb")}
-            aria-label="Toggle language"
-          >
-            {lang === "nb" ? "EN" : "NB"}
-          </Button>
+          <Badge tone="sky" className="hidden sm:inline-flex">
+            {t.demo}
+          </Badge>
+          <LanguageToggle />
         </div>
       </div>
 

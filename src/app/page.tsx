@@ -10,6 +10,24 @@ import { DemoNotice } from "@/components/layout/SiteHeader";
 export default function LandingPage() {
   const { t } = useI18n();
 
+  const features = [
+    {
+      icon: Map,
+      title: t.landing.visualPlan,
+      text: t.landing.visualPlanText,
+    },
+    {
+      icon: Sparkles,
+      title: t.landing.multiGoals,
+      text: t.landing.multiGoalsText,
+    },
+    {
+      icon: ShieldCheck,
+      title: t.landing.honestStatus,
+      text: t.landing.honestStatusText,
+    },
+  ];
+
   return (
     <div className="space-y-10">
       <section className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-navy-900 via-navy-800 to-teal-dark px-6 py-14 text-white shadow-glow md:px-12 md:py-20">
@@ -23,7 +41,7 @@ export default function LandingPage() {
           {t.tagline}
         </h1>
         <p className="mt-4 max-w-xl text-base text-sky-100/90 md:text-lg">
-          Velg mål. Se fagene. Hold flere dører åpne — fra 10. trinn til videre.
+          {t.taglineSub}
         </p>
         <div className="mt-8 flex flex-wrap gap-3">
           <Button asChild size="lg" variant="teal">
@@ -31,8 +49,13 @@ export default function LandingPage() {
               {t.start} <ArrowRight className="h-5 w-5" />
             </Link>
           </Button>
-          <Button asChild size="lg" variant="outline" className="border-white/30 bg-white/10 text-white hover:bg-white/20">
-            <Link href="/dashboard">Se demoplan</Link>
+          <Button
+            asChild
+            size="lg"
+            variant="outline"
+            className="border-white/30 bg-white/10 text-white hover:bg-white/20"
+          >
+            <Link href="/dashboard">{t.seeDemo}</Link>
           </Button>
         </div>
       </section>
@@ -40,23 +63,7 @@ export default function LandingPage() {
       <DemoNotice />
 
       <div className="grid gap-4 md:grid-cols-3">
-        {[
-          {
-            icon: Map,
-            title: "Visuell plan",
-            text: "Vg1 → Vg2 → Vg3 med fargekoder",
-          },
-          {
-            icon: Sparkles,
-            title: "Flere mål",
-            text: "Hold lege + ingeniør åpne samtidig",
-          },
-          {
-            icon: ShieldCheck,
-            title: "Ærlige statuser",
-            text: "Fagkrav ≠ garantert opptak",
-          },
-        ].map(({ icon: Icon, title, text }) => (
+        {features.map(({ icon: Icon, title, text }) => (
           <Card key={title} className="animate-fade-up">
             <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-teal-soft text-teal-dark">
               <Icon className="h-6 w-6" />
@@ -70,7 +77,7 @@ export default function LandingPage() {
       </div>
 
       <Card className="border-amber-200 bg-amber-50/80 text-sm text-amber-950">
-        <strong>Merk:</strong> {t.disclaimer}
+        <strong>{t.note}:</strong> {t.disclaimer}
       </Card>
     </div>
   );

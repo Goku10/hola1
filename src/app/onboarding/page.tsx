@@ -32,29 +32,31 @@ import { DemoNotice } from "@/components/layout/SiteHeader";
 import { cn } from "@/lib/utils";
 import { labelOf, useI18n } from "@/lib/i18n";
 
-const stages: { id: StudentStage; label: string }[] = [
-  { id: "grade10", label: "10. trinn" },
-  { id: "vg1", label: "Vg1" },
-  { id: "vg2", label: "Vg2" },
-  { id: "vg3", label: "Vg3" },
-  { id: "fagbrev", label: "Fagbrev" },
-  { id: "adult_private", label: "Voksen / privatist" },
+const stageIds: StudentStage[] = [
+  "grade10",
+  "vg1",
+  "vg2",
+  "vg3",
+  "fagbrev",
+  "adult_private",
 ];
 
-const interests: { id: InterestId; label: string; icon: React.ElementType }[] = [
-  { id: "health", label: "Helse", icon: Heart },
-  { id: "science", label: "Realfag", icon: FlaskConical },
-  { id: "engineering", label: "Ingeniør", icon: Cog },
-  { id: "it", label: "IT", icon: Code2 },
-  { id: "business", label: "Økonomi", icon: Briefcase },
-  { id: "law", label: "Juss", icon: Scale },
-  { id: "education", label: "Utdanning", icon: BookOpen },
-  { id: "sports", label: "Idrett", icon: Trophy },
-  { id: "arts", label: "Kunst", icon: Palette },
-  { id: "trades", label: "Yrkesfag", icon: Hammer },
+const interestMeta: { id: InterestId; icon: React.ElementType }[] = [
+  { id: "health", icon: Heart },
+  { id: "science", icon: FlaskConical },
+  { id: "engineering", icon: Cog },
+  { id: "it", icon: Code2 },
+  { id: "business", icon: Briefcase },
+  { id: "law", icon: Scale },
+  { id: "education", icon: BookOpen },
+  { id: "sports", icon: Trophy },
+  { id: "arts", icon: Palette },
+  { id: "trades", icon: Hammer },
 ];
 
 const maths: MathsLevel[] = ["unknown", "1P", "1T", "2P", "S1", "S2", "R1", "R2"];
+const confidenceIds: ConfidenceLevel[] = ["low", "medium", "high", "unsure"];
+const learningIds: LearningPreference[] = ["theory", "practical", "mixed"];
 
 function SelectCard({
   selected,
@@ -86,7 +88,7 @@ function SelectCard({
 
 export default function OnboardingPage() {
   const { profile, updateProfile, setProfile } = useProfile();
-  const { lang } = useI18n();
+  const { lang, t } = useI18n();
   const router = useRouter();
   const [step, setStep] = useState(0);
   const total = 7;
@@ -105,9 +107,11 @@ export default function OnboardingPage() {
   return (
     <div className="mx-auto max-w-2xl space-y-6">
       <div>
-        <Badge tone="teal">Steg {step + 1}/{total}</Badge>
+        <Badge tone="teal">
+          {t.onboarding.step} {step + 1}/{total}
+        </Badge>
         <h1 className="mt-2 font-display text-3xl font-extrabold text-navy-900">
-          Din profil
+          {t.onboarding.title}
         </h1>
         <div className="mt-3 flex gap-1.5">
           {Array.from({ length: total }).map((_, i) => (
@@ -127,16 +131,19 @@ export default function OnboardingPage() {
         {step === 0 && (
           <>
             <h2 className="mb-4 flex items-center gap-2 font-display text-xl font-bold">
-              <GraduationCap className="h-5 w-5 text-teal" /> Hvor er du nå?
+              <GraduationCap className="h-5 w-5 text-teal" />{" "}
+              {t.onboarding.whereNow}
             </h2>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-              {stages.map((s) => (
+              {stageIds.map((id) => (
                 <SelectCard
-                  key={s.id}
-                  selected={profile.stage === s.id}
-                  onClick={() => updateProfile({ stage: s.id })}
+                  key={id}
+                  selected={profile.stage === id}
+                  onClick={() => updateProfile({ stage: id })}
                 >
-                  <span className="font-display text-lg font-bold">{s.label}</span>
+                  <span className="font-display text-lg font-bold">
+                    {t.onboarding.stages[id]}
+                  </span>
                 </SelectCard>
               ))}
             </div>
@@ -145,7 +152,9 @@ export default function OnboardingPage() {
 
         {step === 1 && (
           <>
-            <h2 className="mb-4 font-display text-xl font-bold">Fylke & skole</h2>
+            <h2 className="mb-4 font-display text-xl font-bold">
+              {t.onboarding.countySchool}
+            </h2>
             <div className="mb-4 grid grid-cols-2 gap-2">
               {counties.map((c) => (
                 <SelectCard
@@ -162,7 +171,7 @@ export default function OnboardingPage() {
             {countySchools.length > 0 && (
               <div className="grid gap-2">
                 <p className="text-xs font-semibold text-slate-500">
-                  Skole (valgfritt)
+                  {t.onboarding.schoolOptional}
                 </p>
                 {countySchools.map((s) => (
                   <SelectCard
@@ -181,7 +190,7 @@ export default function OnboardingPage() {
         {step === 2 && (
           <>
             <h2 className="mb-4 font-display text-xl font-bold">
-              Fremmedspråk på ungdomsskolen?
+              {t.onboarding.foreignLang}
             </h2>
             <div className="grid grid-cols-2 gap-3">
               {[true, false].map((v) => (
@@ -193,7 +202,7 @@ export default function OnboardingPage() {
                   }
                 >
                   <span className="font-display text-xl font-bold">
-                    {v ? "Ja" : "Nei"}
+                    {v ? t.onboarding.yes : t.onboarding.no}
                   </span>
                 </SelectCard>
               ))}
@@ -203,7 +212,9 @@ export default function OnboardingPage() {
 
         {step === 3 && (
           <>
-            <h2 className="mb-4 font-display text-xl font-bold">Mattenivå</h2>
+            <h2 className="mb-4 font-display text-xl font-bold">
+              {t.onboarding.maths}
+            </h2>
             <div className="grid grid-cols-4 gap-2">
               {maths.map((m) => (
                 <SelectCard
@@ -223,9 +234,11 @@ export default function OnboardingPage() {
 
         {step === 4 && (
           <>
-            <h2 className="mb-4 font-display text-xl font-bold">Interesser</h2>
+            <h2 className="mb-4 font-display text-xl font-bold">
+              {t.onboarding.interests}
+            </h2>
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-              {interests.map(({ id, label, icon: Icon }) => {
+              {interestMeta.map(({ id, icon: Icon }) => {
                 const selected = profile.interests.includes(id);
                 return (
                   <SelectCard
@@ -239,7 +252,9 @@ export default function OnboardingPage() {
                     }}
                   >
                     <Icon className="mb-1 h-5 w-5 text-teal" />
-                    <span className="font-semibold">{label}</span>
+                    <span className="font-semibold">
+                      {t.onboarding.interestLabels[id]}
+                    </span>
                   </SelectCard>
                 );
               })}
@@ -250,7 +265,7 @@ export default function OnboardingPage() {
         {step === 5 && (
           <>
             <h2 className="mb-4 font-display text-xl font-bold">
-              Mål (flere OK)
+              {t.onboarding.goals}
             </h2>
             <div className="grid grid-cols-2 gap-2">
               {careers.map((c) => {
@@ -279,43 +294,32 @@ export default function OnboardingPage() {
         {step === 6 && (
           <>
             <h2 className="mb-3 font-display text-xl font-bold">
-              Selvtillit (valgfritt)
+              {t.onboarding.confidence}
             </h2>
             <div className="mb-6 grid grid-cols-2 gap-2 sm:grid-cols-4">
-              {(
-                [
-                  ["low", "Usikker"],
-                  ["medium", "OK"],
-                  ["high", "Trygg"],
-                  ["unsure", "Vet ikke"],
-                ] as [ConfidenceLevel, string][]
-              ).map(([id, label]) => (
+              {confidenceIds.map((id) => (
                 <SelectCard
                   key={id}
                   selected={profile.confidence === id}
                   onClick={() => updateProfile({ confidence: id })}
                   className="text-center"
                 >
-                  {label}
+                  {t.onboarding.confidenceLabels[id]}
                 </SelectCard>
               ))}
             </div>
-            <h2 className="mb-3 font-display text-xl font-bold">Læringsstil</h2>
+            <h2 className="mb-3 font-display text-xl font-bold">
+              {t.onboarding.learning}
+            </h2>
             <div className="grid grid-cols-3 gap-2">
-              {(
-                [
-                  ["theory", "Teori"],
-                  ["practical", "Praksis"],
-                  ["mixed", "Begge"],
-                ] as [LearningPreference, string][]
-              ).map(([id, label]) => (
+              {learningIds.map((id) => (
                 <SelectCard
                   key={id}
                   selected={profile.learningPreference === id}
                   onClick={() => updateProfile({ learningPreference: id })}
                   className="text-center"
                 >
-                  {label}
+                  {t.onboarding.learningLabels[id]}
                 </SelectCard>
               ))}
             </div>
@@ -325,10 +329,10 @@ export default function OnboardingPage() {
 
       <div className="flex justify-between">
         <Button variant="ghost" onClick={back} disabled={step === 0}>
-          <ChevronLeft className="h-4 w-4" /> Tilbake
+          <ChevronLeft className="h-4 w-4" /> {t.onboarding.back}
         </Button>
         <Button variant="teal" onClick={next}>
-          {step === total - 1 ? "Se planen" : "Neste"}
+          {step === total - 1 ? t.onboarding.seePlan : t.onboarding.next}
           <ChevronRight className="h-4 w-4" />
         </Button>
       </div>
