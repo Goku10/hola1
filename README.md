@@ -61,3 +61,7 @@ Demanding route; confirm timetable/offerings with the school.
 ## Licence
 
 Private demo project.
+
+## Agent memory
+
+See [`MEMORY.md`](MEMORY.md). Agents must update it on every remote sync and at session end. Helper: `./scripts/sync-memory.sh "note"`.
