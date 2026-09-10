@@ -13,7 +13,10 @@ Persistent project memory for Cloud Agents and local sessions.
 | EduNor push status | **Blocked** — Cursor GitHub App installation only lists `Goku10/hola1` |
 | Stack | Next.js App Router, TypeScript, Tailwind, Vitest |
 | Default demo | Grade 10 · doctor + engineer |
-| Last memory update | 2026-09-09 — full NB/EN UI toggle |
+| Language | NO \| EN segmented header toggle; preference in `localStorage` (`utdanningssti-lang`) |
+| Dev server | `npm run dev` → port **3000** on Cloud Agent VM (not user's laptop localhost) |
+| Last memory update | 2026-09-10 (session sync) |
+| Latest commit | `b94d0e2` — full NB/EN UI language toggle |
 
 ## Sync log
 
@@ -22,9 +25,10 @@ Persistent project memory for Cloud Agents and local sessions.
 | 2026-09-09 | Initial app commit + PR | `hola1` `cursor/utdanningssti-norge-190d` | OK — PR #6 |
 | 2026-09-09 | First push attempt to EduNor `main` | `edunor` | 403 `cursor[bot]` denied |
 | 2026-09-09 | Retry after user said access granted | `edunor` | Still 403 — installation repos = only `hola1` |
-| 2026-09-09 | Added memory module | local → pending push | This file |
-
-| 2026-09-09 | Full NB/EN language toggle across UI | origin | OK |
+| 2026-09-09 | Added memory module | `hola1` | OK |
+| 2026-09-09 | Full NB/EN language toggle across UI | `hola1` | OK |
+| 2026-09-10 | Session memory refresh + push | `hola1` | pending this commit |
+| 2026-09-10 | EduNor push retry | `edunor` | see after push |
 
 ## How to unblock EduNor
 
@@ -44,12 +48,18 @@ When EduNor works: `git push -u edunor HEAD:main` (or current feature branch), t
 ## Product memory (stable facts)
 
 - Visual-first UI for ages 15–20; Norwegian Bokmål default + full EN toggle (persisted)
+- Header **NO \| EN** control wires `src/lib/i18n/index.tsx` through landing, onboarding, careers, dashboard, compare, admin, chips
 - Rules engine: AND/OR requirements, S/R maths ban, prerequisites, school offerings
 - Doctor+engineer plan: Vg1 **1T** · Vg2 **R1 + Fysikk 1 + Kjemi 1** · Vg3 **R2 + Kjemi 2**
 - Historical poenggrenser are **example** data — never claim live Samordna
 - Pages: `/`, `/onboarding`, `/karrierer`, `/dashboard`, `/sammenlign`, `/admin`
 - Seeds: `src/lib/data/seeds/` · Engine: `src/lib/engine/` · Tests: `tests/engine/`
 - Docs: `README.md`, `docs/dataset.md`, `docs/rules-engine.md`
+- Agent memory: `MEMORY.md` · helper `scripts/sync-memory.sh`
+
+## Preview / networking note
+
+- App listens on the **Cloud Agent VM**. User laptop `localhost:3000` → `ERR_CONNECTION_REFUSED` unless Cursor **port forward 3000** is used, or the remote/Simple Browser is used.
 
 ## Session checklist (agents)
 
