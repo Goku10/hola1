@@ -16,7 +16,7 @@ Persistent project memory for Cloud Agents and local sessions.
 | Language | NO \| EN segmented header toggle; preference in `localStorage` (`utdanningssti-lang`) |
 | Dev server | `npm run dev` → port **3000** on Cloud Agent VM (not user's laptop localhost) |
 | Last memory update | 2026-09-10 (session sync) |
-| Latest commit | `b94d0e2` — full NB/EN UI language toggle |
+| Latest commit | `c7b4b70` — agent memory sync 2026-09-10 |
 
 ## Sync log
 
@@ -27,8 +27,8 @@ Persistent project memory for Cloud Agents and local sessions.
 | 2026-09-09 | Retry after user said access granted | `edunor` | Still 403 — installation repos = only `hola1` |
 | 2026-09-09 | Added memory module | `hola1` | OK |
 | 2026-09-09 | Full NB/EN language toggle across UI | `hola1` | OK |
-| 2026-09-10 | Session memory refresh + push | `hola1` | pending this commit |
-| 2026-09-10 | EduNor push retry | `edunor` | see after push |
+| 2026-09-10 | Session memory refresh + push | `hola1` | OK — `c7b4b70` |
+| 2026-09-10 | EduNor push retry | `edunor` | Still 403 — App repos = only `hola1` |
 
 ## How to unblock EduNor
 
