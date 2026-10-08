@@ -356,6 +356,11 @@ button:focus-visible, input:focus-visible, a:focus-visible {
   box-shadow: 0 0 0 1px rgba(230, 200, 117, .12), 0 0 28px rgba(83, 225, 172, .14);
 }
 
+.vault-error .input-shell {
+  border-color: rgba(235, 74, 94, .9);
+  box-shadow: 0 0 0 1px rgba(229, 69, 87, .24), 0 0 28px rgba(173, 22, 42, .34);
+}
+
 .input-rune {
   padding-left: 17px;
   color: rgba(230, 200, 117, .5);
@@ -408,6 +413,11 @@ button:focus-visible, input:focus-visible, a:focus-visible {
 }
 
 .feedback.visible { opacity: 1; }
+
+.feedback.visible {
+  color: #ff8090;
+  text-shadow: 0 0 12px rgba(255, 42, 73, .55);
+}
 
 .unlock-button {
   position: relative;

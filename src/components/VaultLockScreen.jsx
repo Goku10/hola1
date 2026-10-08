@@ -45,7 +45,7 @@ export default function VaultLockScreen({ onUnlock }) {
     setError(true)
     setErrorCount((count) => count + 1)
     playRumble()
-    timerRef.current = window.setTimeout(() => setError(false), 850)
+    timerRef.current = window.setTimeout(() => setError(false), 2400)
   }
 
   return (
@@ -107,7 +107,10 @@ export default function VaultLockScreen({ onUnlock }) {
                 id="rune-key"
                 type="text"
                 value={key}
-                onChange={(event) => setKey(event.target.value)}
+                onChange={(event) => {
+                  setKey(event.target.value)
+                  setError(false)
+                }}
                 placeholder="The word lies sleeping…"
                 autoComplete="off"
                 spellCheck="false"
